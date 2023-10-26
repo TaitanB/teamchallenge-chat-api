@@ -15,7 +15,10 @@
   },
   "consumes": ["application/json", "multipart/form-data"],
   "produces": ["application/json"],
-  "servers": [{ "url": "http://localhost:3001/api" }],
+  "servers": [
+    { "url": "https://teamchallenge-chat-api.onrender.com/api" },
+    { "url": "http://localhost:3001/api" }
+  ],
   "tags": [
     {
       "name": "Users",
