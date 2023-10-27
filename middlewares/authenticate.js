@@ -2,8 +2,8 @@ const { HttpError } = require("../helpers");
 const User = require("../models/user");
 
 const authenticate = async (req, res, next) => {
-  const { apikey = "" } = req.headers;
-  const token = apikey.trim();
+  const { ApiKey = "" } = req.headers;
+  const token = ApiKey.trim();
 
   try {
     const user = await User.findOne({ token });

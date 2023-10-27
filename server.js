@@ -31,6 +31,8 @@ nodeNameSpace.on("connection", (socket) => {
   socket.on("join", (data) => {
     socket.join(data.room);
 
+    console.log("room => ", data.room, ", nick => ", data.nick);
+
     nodeNameSpace.in(data.room).emit("message", {
       msg: `${data.nick ? "" : "New user "}joined ${data.room} room`,
       nick: data.nick,
@@ -38,6 +40,15 @@ nodeNameSpace.on("connection", (socket) => {
   });
 
   socket.on("message", (data) => {
+    console.log(
+      "message => ",
+      data.msg,
+      ", room => ",
+      data.room,
+      ", nick => ",
+      data.nick
+    );
+
     nodeNameSpace
       .in(data.room)
       .emit("message", { msg: data.msg, nick: data.nick });
