@@ -23,6 +23,10 @@
     {
       "name": "Users",
       "description": "Users endpoints"
+    },
+    {
+      "name": "Rooms",
+      "description": "Rooms endpoints"
     }
   ],
   "paths": {
@@ -114,6 +118,325 @@
           }
         }
       }
+    },
+
+    "/rooms/public": {
+      "get": {
+        "tags": ["Rooms"],
+        "summary": "Get all public rooms",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "description": "Page number for pagination"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "description": "Limit of items per page"
+          },
+          {
+            "in": "query",
+            "name": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Search query by rooms"
+          },
+          {
+            "in": "query",
+            "name": "topic",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "topic-1",
+                "topic-2",
+                "topic-3",
+                "topic-4",
+                "topic-5",
+                "topic-6",
+                "topic-7",
+                "topic-8",
+                "topic-9",
+                "topic-10"
+              ]
+            },
+            "description": "Filter rooms by topics"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "page": {
+                      "type": "integer",
+                      "description": "Page number for pagination",
+                      "example": 1
+                    },
+                    "perPage": {
+                      "type": "integer",
+                      "description": "Quantity per page",
+                      "example": 10
+                    },
+                    "totalPages": {
+                      "type": "integer",
+                      "description": "Total pages",
+                      "example": 5
+                    },
+                    "rooms": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RoomResponse"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/rooms/owner": {
+      "post": {
+        "tags": ["Rooms"],
+        "summary": "Add new room",
+        "security": [{ "ApiKey": [] }],
+        "produces": ["application/json"],
+        "requestBody": {
+          "description": "Room data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RoomRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Room added",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/addRoomResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Invalid token"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {}
+          }
+        }
+      },
+      "get": {
+        "tags": ["Rooms"],
+        "summary": "Get all rooms for owner",
+        "security": [{ "ApiKey": [] }],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "description": "Page number for pagination"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "description": "Limit of items per page"
+          },
+          {
+            "in": "query",
+            "name": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Search query by rooms"
+          },
+          {
+            "in": "query",
+            "name": "topic",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "topic-1",
+                "topic-2",
+                "topic-3",
+                "topic-4",
+                "topic-5",
+                "topic-6",
+                "topic-7",
+                "topic-8",
+                "topic-9",
+                "topic-10"
+              ]
+            },
+            "description": "Filter rooms by topics"
+          },
+          {
+            "in": "query",
+            "name": "type",
+            "schema": {
+              "type": "string",
+              "enum": ["public", "private"]
+            },
+            "description": "Filter rooms by type - ПОКИ НЕ ПРАЦЮЄ"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "page": {
+                      "type": "integer",
+                      "description": "Page number for pagination",
+                      "example": 1
+                    },
+                    "perPage": {
+                      "type": "integer",
+                      "description": "Quantity per page",
+                      "example": 10
+                    },
+                    "totalPages": {
+                      "type": "integer",
+                      "description": "Total pages",
+                      "example": 5
+                    },
+                    "rooms": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RoomResponse"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/rooms/{id}": {
+      "get": {
+        "tags": ["Rooms"],
+        "summary": "Get room by id - ПОКИ НЕ ПРАЦЮЄ",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Room's id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/oneRoomResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
+          "404": {
+            "description": "Room not found",
+            "content": {}
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Rooms"],
+        "summary": "Delete a room by id",
+        "security": [{ "ApiKey": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Room's id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Room deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
+          "404": {
+            "description": "Notice not found",
+            "content": {}
+          }
+        }
+      }
     }
   },
 
@@ -149,6 +472,224 @@
             "type": "string",
             "description": "User avatar url",
             "example": "https://example.com/avatar.jpg"
+          }
+        }
+      },
+
+      "RoomRequest": {
+        "type": "object",
+        "required": ["title", "type"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "The title of the room",
+            "minLength": 4,
+            "maxLength": 30,
+            "example": "Room-1"
+          },
+          "topic": {
+            "type": "string",
+            "description": "Room topic for public rooms",
+            "enum": [
+              "topic-1",
+              "topic-2",
+              "topic-3",
+              "topic-4",
+              "topic-5",
+              "topic-6",
+              "topic-7",
+              "topic-8",
+              "topic-9",
+              "topic-10"
+            ],
+            "example": "topic-1"
+          },
+          "type": {
+            "type": "string",
+            "description": "Room type",
+            "enum": ["public", "private"],
+            "example": "public"
+          },
+          "description": {
+            "type": "string",
+            "description": "Room description",
+            "maxLength": 300,
+            "example": "Room description, rules, etc."
+          }
+        }
+      },
+      "RoomResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Room's id",
+            "example": "1h23u45iumyhigjfsaitfyg"
+          },
+          "title": {
+            "type": "string",
+            "description": "The title of the room",
+            "example": "Room-1"
+          },
+          "topic": {
+            "type": "string",
+            "description": "Room topic for public rooms",
+            "example": "topic-1"
+          },
+          "type": {
+            "type": "string",
+            "description": "Room type",
+            "example": "public"
+          },
+          "description": {
+            "type": "string",
+            "description": "Room description",
+            "example": "Room description"
+          },
+          "createdAt": {
+            "type": "Date",
+            "description": "Room creation date",
+            "example": "2023-07-23T20:00:30.149+00:00"
+          },
+          "updatedAt": {
+            "type": "Date",
+            "description": "Room updated date",
+            "example": "2023-07-23T20:00:30.149+00:00"
+          }
+        }
+      },
+      "addRoomResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Room's id",
+            "example": "653c20669b6334f0b861e498"
+          },
+          "title": {
+            "type": "string",
+            "description": "The title of the room",
+            "example": "Room-1"
+          },
+          "topic": {
+            "type": "string",
+            "description": "Room topic for public rooms",
+            "example": "topic-1"
+          },
+          "type": {
+            "type": "string",
+            "description": "Room type",
+            "example": "public"
+          },
+          "description": {
+            "type": "string",
+            "description": "Room description",
+            "example": "Room description"
+          },
+          "owner": {
+            "type": "string",
+            "description": "Room's owner id",
+            "example": "nfuwjhretyhbvcbuiwrhty"
+          },
+          "users": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Room's user id",
+              "example": "32143dshtuv2dfyuijhgf45474"
+            }
+          },
+          "createdAt": {
+            "type": "Date",
+            "description": "Room creation date",
+            "example": "2023-07-23T20:00:30.149+00:00"
+          },
+          "updatedAt": {
+            "type": "Date",
+            "description": "Room updated date",
+            "example": "2023-07-23T20:00:30.149+00:00"
+          }
+        }
+      },
+      "oneRoomResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Room's id",
+            "example": "653c20669b6334f0b861e498"
+          },
+          "title": {
+            "type": "string",
+            "description": "The title of the room",
+            "example": "Room-1"
+          },
+          "topic": {
+            "type": "string",
+            "description": "Room topic",
+            "example": "topic-1"
+          },
+          "type": {
+            "type": "string",
+            "description": "Room type",
+            "example": "public"
+          },
+          "description": {
+            "type": "string",
+            "description": "Room description",
+            "example": "Room description"
+          },
+          "owner": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "description": "Room's owner id",
+                "example": "nfuwjhretyhbvcbuiwrhty"
+              },
+              "name": {
+                "type": "string",
+                "description": "Room's owner name",
+                "example": "Mango"
+              },
+              "avatarURL": {
+                "type": "string",
+                "description": "Room's owner avatar URL",
+                "example": "https://example.com/avatar.jpg"
+              }
+            }
+          },
+          "users": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Room's user id",
+              "example": "32143dshtuv2dfyuijhgf45474"
+            }
+          },
+          "createdAt": {
+            "type": "Date",
+            "description": "Room creation date",
+            "example": "2023-07-23T20:00:30.149+00:00"
+          },
+          "updatedAt": {
+            "type": "Date",
+            "description": "Room updated date",
+            "example": "2023-07-23T20:00:30.149+00:00"
+          }
+        }
+      },
+
+      "DeleteResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Notification of successful deletion"
+          },
+          "deletedRoomId": {
+            "type": "string",
+            "description": "Id of the deleted object"
           }
         }
       }

@@ -1,7 +1,14 @@
 const express = require("express");
 const isValidId = require("../../middlewares/isValidId");
 
-const { addRoom, editById, deleteById } = require("../../controllers/rooms");
+const {
+  addRoom,
+  editById,
+  deleteById,
+  getAllPublic,
+  getAllOwner,
+  getById,
+} = require("../../controllers/rooms");
 
 const { roomAddSchema, roomEditSchema } = require("../../schemas/rooms");
 const { validateBody } = require("../../decorators");
@@ -9,13 +16,13 @@ const { authenticate } = require("../../middlewares");
 
 const router = express.Router();
 
-// router.get("/", getAll);
+router.get("/public", getAllPublic);
 
-// router.get("/owner", authenticate, getAllOwner);
+router.get("/owner", authenticate, getAllOwner);
 
-// router.get("/:roomId", isValidId, getById);
+router.get("/:roomId", authenticate, isValidId, getById);
 
-router.post("/", authenticate, validateBody(roomAddSchema), addRoom);
+router.post("/owner", authenticate, validateBody(roomAddSchema), addRoom);
 
 router.patch(
   "/edit/:roomId",
