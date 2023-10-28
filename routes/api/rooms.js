@@ -1,7 +1,7 @@
 const express = require("express");
 const isValidId = require("../../middlewares/isValidId");
 
-const { addRoom, editById, deleteById } = require("../../controllers/room");
+const { addRoom, editById, deleteById } = require("../../controllers/rooms");
 
 const { roomAddSchema, roomEditSchema } = require("../../schemas/rooms");
 const { validateBody } = require("../../decorators");

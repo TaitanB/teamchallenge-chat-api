@@ -6,7 +6,7 @@ const swaggerDocument = require("./swagger.json");
 
 require("dotenv").config();
 
-const userRouter = require("./routes/api/user");
+const userRouter = require("./routes/api/users");
 const roomRouter = require("./routes/api/rooms");
 
 // const { FRONTEND_URL } = process.env;

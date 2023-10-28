@@ -1,6 +1,6 @@
 const express = require("express");
 
-const { register, logout, current } = require("../../controllers/user");
+const { register, logout, current } = require("../../controllers/users");
 const { userSchema } = require("../../schemas/users");
 const { validateBody } = require("../../decorators");
 const { authenticate } = require("../../middlewares");

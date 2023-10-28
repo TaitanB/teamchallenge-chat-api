@@ -16,7 +16,7 @@ const editById = async (req, res) => {
   );
 
   if (!roomToUpdate) {
-    throw HttpError(404, "Todo not found");
+    throw HttpError(404, "Room not found");
   }
 
   await roomToUpdate.save();

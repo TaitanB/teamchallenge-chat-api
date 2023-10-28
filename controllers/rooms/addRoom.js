@@ -9,8 +9,6 @@ const addRoom = async (req, res) => {
     owner,
   });
 
-  console.log(result);
-
   res.status(201).json(result);
 };
 
