@@ -27,6 +27,10 @@
     {
       "name": "Rooms",
       "description": "Rooms endpoints"
+    },
+    {
+      "name": "Messages",
+      "description": "Messages endpoints"
     }
   ],
   "paths": {
@@ -219,49 +223,6 @@
       }
     },
     "/rooms/owner": {
-      "post": {
-        "tags": ["Rooms"],
-        "summary": "Add new room",
-        "security": [{ "ApiKey": [] }],
-        "produces": ["application/json"],
-        "requestBody": {
-          "description": "Room data",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RoomRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Room added",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/addRoomResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Not authorized",
-            "content": {
-              "application/json": {
-                "example": {
-                  "message": "Invalid token"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {}
-          }
-        }
-      },
       "get": {
         "tags": ["Rooms"],
         "summary": "Get all rooms for owner",
@@ -321,7 +282,7 @@
               "type": "string",
               "enum": ["public", "private"]
             },
-            "description": "Filter rooms by type - ПОКИ НЕ ПРАЦЮЄ"
+            "description": "Filter rooms by type"
           }
         ],
         "responses": {
@@ -369,10 +330,66 @@
         }
       }
     },
+    "/rooms": {
+      "post": {
+        "tags": ["Rooms"],
+        "summary": "Add new room",
+        "security": [{ "ApiKey": [] }],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "guest",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Room guest ID"
+          }
+        ],
+        "requestBody": {
+          "description": "Room data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RoomRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Room added",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddRoomResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Invalid token"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {}
+          }
+        }
+      }
+    },
     "/rooms/{id}": {
       "get": {
         "tags": ["Rooms"],
-        "summary": "Get room by id - ПОКИ НЕ ПРАЦЮЄ",
+        "security": [{ "ApiKey": [] }],
+        "summary": "Get room by id",
         "parameters": [
           {
             "in": "path",
@@ -388,7 +405,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/oneRoomResponse"
+                  "$ref": "#/components/schemas/OneRoomResponse"
                 }
               }
             }
@@ -399,6 +416,52 @@
           },
           "404": {
             "description": "Room not found",
+            "content": {}
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Rooms"],
+        "summary": "Edit room data",
+        "security": [{ "ApiKey": [] }],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Room's id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "description": "Request to update room data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditRoomRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Room data updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OneRoomResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
+          "500": {
+            "description": "Internal server error",
             "content": {}
           }
         }
@@ -432,7 +495,62 @@
             "content": {}
           },
           "404": {
-            "description": "Notice not found",
+            "description": "Room not found",
+            "content": {}
+          }
+        }
+      }
+    },
+
+    "/messages/{id}": {
+      "post": {
+        "tags": ["Messages"],
+        "summary": "Add new message",
+        "security": [{ "ApiKey": [] }],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Room's id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "description": "Message data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MessageRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Message added",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddMessageResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Invalid token"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
             "content": {}
           }
         }
@@ -518,6 +636,24 @@
           }
         }
       },
+      "EditRoomRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "The title of the room",
+            "minLength": 4,
+            "maxLength": 30,
+            "example": "Room-1"
+          },
+          "description": {
+            "type": "string",
+            "description": "Room description",
+            "maxLength": 300,
+            "example": "Room description, rules, etc."
+          }
+        }
+      },
       "RoomResponse": {
         "type": "object",
         "properties": {
@@ -558,7 +694,7 @@
           }
         }
       },
-      "addRoomResponse": {
+      "AddRoomResponse": {
         "type": "object",
         "properties": {
           "_id": {
@@ -611,7 +747,7 @@
           }
         }
       },
-      "oneRoomResponse": {
+      "OneRoomResponse": {
         "type": "object",
         "properties": {
           "_id": {
@@ -675,6 +811,105 @@
           "updatedAt": {
             "type": "Date",
             "description": "Room updated date",
+            "example": "2023-07-23T20:00:30.149+00:00"
+          }
+        }
+      },
+
+      "MessageRequest": {
+        "type": "object",
+        "required": ["content"],
+        "properties": {
+          "content": {
+            "type": "string",
+            "description": "Message content",
+            "maxLength": 300,
+            "example": "Message content"
+          }
+        }
+      },
+      "AddMessageResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Message's id",
+            "example": "1h23u45iumyhigjfsaitfyg"
+          },
+          "roomId": {
+            "type": "string",
+            "description": "Identifier of the room in which this message was written",
+            "example": "1h23u45iumyhigjfsaitfyg"
+          },
+          "content": {
+            "type": "string",
+            "description": "Message content",
+            "example": "Message content"
+          },
+          "owner": {
+            "type": "string",
+            "description": "Message's owner id",
+            "example": "nfuwjhretyhbvcbuiwrhty"
+          },
+          "replys": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReplyResponse"
+            }
+          },
+          "createdAt": {
+            "type": "Date",
+            "description": "Message creation date",
+            "example": "2023-07-23T20:00:30.149+00:00"
+          },
+          "updatedAt": {
+            "type": "Date",
+            "description": "Message updated date",
+            "example": "2023-07-23T20:00:30.149+00:00"
+          }
+        }
+      },
+      "ReplyResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Reply's owner id",
+            "example": "nfuwjhretyhbvcbuiwrhty"
+          },
+          "content": {
+            "type": "string",
+            "description": "Reply's owner name",
+            "example": "Mango"
+          },
+          "owner": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "description": "Reply's owner id",
+                "example": "nfuwjhretyhbvcbuiwrhty"
+              },
+              "name": {
+                "type": "string",
+                "description": "Reply's owner name",
+                "example": "Mango"
+              },
+              "avatarURL": {
+                "type": "string",
+                "description": "Reply's owner avatar URL",
+                "example": "https://example.com/avatar.jpg"
+              }
+            }
+          },
+          "createdAt": {
+            "type": "Date",
+            "description": "Message creation date",
+            "example": "2023-07-23T20:00:30.149+00:00"
+          },
+          "updatedAt": {
+            "type": "Date",
+            "description": "Message updated date",
             "example": "2023-07-23T20:00:30.149+00:00"
           }
         }

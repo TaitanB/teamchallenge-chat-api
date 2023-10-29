@@ -3,13 +3,24 @@ const { ctrlWrapper } = require("../../decorators");
 
 const addRoom = async (req, res) => {
   const { _id: owner } = req.user;
+  const { type } = req.body;
+  const { guest } = req.query;
 
-  const result = await Room.create({
+  // додати перевірку ід гостя
+
+  const room = await Room.create({
     ...req.body,
     owner,
   });
 
-  res.status(201).json(result);
+  if (guest !== undefined) {
+    if (type === "private") {
+      room.users.push(guest, owner);
+    }
+    room.save();
+  }
+
+  res.status(201).json(room);
 };
 
 module.exports = {

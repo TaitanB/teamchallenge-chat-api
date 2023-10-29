@@ -14,7 +14,6 @@ const roomSchema = new Schema(
     description: {
       type: String,
       max: 300,
-      default: "",
     },
     type: {
       type: String,

@@ -22,10 +22,10 @@ router.get("/owner", authenticate, getAllOwner);
 
 router.get("/:roomId", authenticate, isValidId, getById);
 
-router.post("/owner", authenticate, validateBody(roomAddSchema), addRoom);
+router.post("/", authenticate, validateBody(roomAddSchema), addRoom);
 
 router.patch(
-  "/edit/:roomId",
+  "/:roomId",
   authenticate,
   isValidId,
   validateBody(roomEditSchema),

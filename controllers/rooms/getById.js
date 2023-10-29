@@ -2,19 +2,31 @@ const Room = require("../../models/room");
 const { HttpError } = require("../../helpers");
 const { ctrlWrapper } = require("../../decorators");
 
-const getById = async (req, res) => {
-  const { id: roomId } = req.params;
+// як юзер перший раз потрапляє у кімнату?????
 
-  const result = await Room.findOne({ _id: roomId }, "").populate(
+const getById = async (req, res) => {
+  const { roomId } = req.params;
+  const { _id: owner } = req.user;
+
+  const room = await Room.findOne({ _id: roomId }, "").populate(
     "owner",
-    "name avatarURL"
+    "_id name avatarURL"
   );
 
-  if (!result) {
-    throw HttpError(404, "Not found");
+  if (!room) {
+    throw HttpError(404, "Room not found");
   }
 
-  res.json(result);
+  if (room.type === "public") {
+    res.json(room);
+  } else {
+    const user = room.users.find((user) => user === owner.toString());
+
+    if (!user) {
+      throw HttpError(404, "User not found");
+    }
+    res.json(room);
+  }
 };
 
 module.exports = {

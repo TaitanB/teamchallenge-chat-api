@@ -13,7 +13,7 @@ const editById = async (req, res) => {
     },
     { title, description },
     { new: true }
-  );
+  ).populate("owner", "_id name avatarURL");
 
   if (!roomToUpdate) {
     throw HttpError(404, "Room not found");
