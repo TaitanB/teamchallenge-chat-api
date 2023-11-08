@@ -4,9 +4,8 @@ const User = require("../models/user");
 const authenticate = async (req, res, next) => {
   const { apikey } = req.headers;
 
-  const token = apikey.trim();
-
   try {
+    const token = apikey.trim();
     const user = await User.findOne({ token });
 
     if (!user) {
