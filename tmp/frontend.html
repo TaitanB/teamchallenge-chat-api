@@ -69,29 +69,6 @@
     .inactive {
       display: none;
     }
-
-    #createForm {
-      margin-top: 30px;
-    }
-
-    .create {
-      flex-direction: column;
-      justify-content: start;
-      align-items: center;
-      margin: 0 auto;
-    }
-
-    .create input {
-      margin-bottom: 0.5rem;
-      margin-right: 0;
-    }
-
-    .create select {
-      margin-bottom: 0.5rem;
-      border: 1px solid rgb(0, 12, 139);
-      width: 100%;
-      padding: 0.5rem;
-    }
   </style>
 </head>
 
@@ -111,52 +88,76 @@
         <button type="submit">join</button>
       </div>
     </form>
-    <form id="createForm">
-      <div class="input-group create">
-        <input id="title" type="text" autocomplete="false" placeholder="enter title room" />
-        <input id="descr" type="text" autocomplete="false" placeholder="enter description room" />
-        <select name="select" id="selest">
-          <option value="public">Public</option>
-          <option value="private">Private</option>
-        </select>
-        <button type="submit">create room</button>
-      </div>
-    </form>
   </div>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="/node_modules/socket.io/client-dist/socket.io.js"></script>
   <script>
     let nick;
     let socket;
-    const room = 'javascript';
+    let room;
+    let token;
+    const date = new Date()
+    const roomId = "654a8b6302d75e484682edab"
+
+    const messages = document.getElementById('messages');
 
     const initSocket = (room, nick) => {
-      socket = io("http://localhost:3001/nodeNameSpace", {
+      socket = io("http://localhost:3001/roomNameSpace", {
         transports: ["websocket"],
         withCredentials: true,
       });
 
+      socket.on('connect', () => {
+        socket.emit('join', { room, nick, date });
+      });
 
-      socket.on('message', ({ nick, msg }) => {
-        const messages = document.getElementById('messages');
-
+      socket.on('user-start-write', ({ nick }) => {
         messages.insertAdjacentHTML(
           'afterbegin',
-          `<li><span style="color: red; font-weight: bold; font-style: italic">${nick}</span>&nbsp;${msg}</li>`
+          `<li><span style="color: green">${nick} started typing...</span></li>`
         );
       });
 
-      socket.on('connect', () => {
-        socket.emit('join', { room, nick });
+      socket.on('user-end-write', ({ nick }) => {
+        messages.insertAdjacentHTML(
+          'afterbegin',
+          `<li><span style="color: red">${nick} stopped typing.</span></li>`
+        );
+      });
+
+      socket.on('message', ({ nick, msg, date }) => {
+        messages.insertAdjacentHTML(
+          'afterbegin',
+          `<li><span style="color: red; font-weight: bold; font-style: italic">${nick}</span>&nbsp;${msg}&nbsp;<i style="color: lightslategray;"">${date}</i></li>`
+        );
       });
     };
 
     const nickForm = document.getElementById('nickForm');
     const msgForm = document.getElementById('msgForm');
-    const createForm = document.getElementById('createForm');
+    const msgField = document.getElementById('msg');
+
+    let isTyping = false;
+
+    msgField.addEventListener("input", () => {
+      if (!isTyping) {
+        socket.emit("user-start-write", { nick: nick, room: room });
+        isTyping = true;
+      }
+    });
+
+    msgField.addEventListener("blur", () => {
+      if (isTyping) {
+        socket.emit("user-end-write", { nick: nick, room: room });
+        isTyping = false;
+      }
+    });
 
     nickForm &&
       nickForm.addEventListener('submit', (event) => {
         event.preventDefault();
+
+        console.log("nickForm")
 
         const nickField = document.getElementById('nick');
 
@@ -164,7 +165,32 @@
 
         nick = nickField.value;
 
-        initSocket(room, nick);
+        axios.post(`http://localhost:3001/api/users/register`, {
+          name: nick
+        })
+          .then(function (response) {
+            // console.log(response.data);
+
+            token = response.data.token
+
+            axios.get(`http://localhost:3001/api/rooms/${roomId}`, {
+              headers: {
+                'ApiKey': `${response.data.token}`
+              }
+            })
+              .then(function (response) {
+                // console.log(response.data);
+                room = response.data.title
+
+                initSocket(room, nick, date);
+              })
+              .catch(function (error) {
+                console.error(error);
+              });
+          })
+          .catch(function (error) {
+            console.error(error);
+          });
 
         msgForm.classList.remove('inactive');
         nickForm.classList.add('inactive');
@@ -174,9 +200,26 @@
       msgForm.addEventListener('submit', (event) => {
         event.preventDefault();
 
-        const msgField = document.getElementById('msg');
+        console.log("msgForm")
 
-        socket.emit('message', { msg: msgField.value, room, nick });
+        const msg = msgField.value
+
+        axios.post(`http://localhost:3001/api/messages/${roomId}`, {
+          content: msg
+        }, {
+          headers: {
+            'ApiKey': `${token}`
+          }
+        })
+          .then(function (response) {
+            // console.log(response.data);
+            room = response.data.room
+
+            socket.emit('message', { msg: msg, room, nick, date: response.data.msg.createdAt });
+          })
+          .catch(function (error) {
+            console.error(error);
+          });
 
         msgField.value = '';
       });

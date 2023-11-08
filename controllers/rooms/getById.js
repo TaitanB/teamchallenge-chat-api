@@ -2,8 +2,6 @@ const Room = require("../../models/room");
 const { HttpError } = require("../../helpers");
 const { ctrlWrapper } = require("../../decorators");
 
-// як юзер перший раз потрапляє у кімнату?????
-
 const getById = async (req, res) => {
   const { roomId } = req.params;
   const { _id: owner } = req.user;

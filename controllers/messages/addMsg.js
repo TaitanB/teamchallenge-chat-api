@@ -37,7 +37,7 @@ const addMsg = async (req, res) => {
 
   await room.save();
 
-  res.status(201).json(result);
+  res.status(201).json({ msg: result, room: room.title });
 };
 
 module.exports = {

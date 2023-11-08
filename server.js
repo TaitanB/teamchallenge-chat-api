@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const socketIO = require("socket.io");
 const app = require("./app");
+const { joinRoom } = require("./controllers/rooms/joinRoom");
 
 const { DB_HOST, PORT } = process.env;
 
@@ -25,34 +26,48 @@ const server = app.listen(port, () => {
 
 const io = socketIO(server);
 
-const nodeNameSpace = io.of("/nodeNameSpace");
+joinRoom(io);
 
-nodeNameSpace.on("connection", (socket) => {
-  socket.on("join", (data) => {
-    socket.join(data.room);
+// const nodeNameSpace = io.of("/nodeNameSpace");
 
-    console.log("room => ", data.room, ", nick => ", data.nick);
+// nodeNameSpace.on("connection", (socket) => {
+//   // console.log(socket.handshake.query);
+//   socket.on("join", (data) => {
+//     socket.join(data.room);
+//     // console.log(data);
+//     // console.log(
+//     //   "room => ",
+//     //   data.room,
+//     //   ", nick => ",
+//     //   data.nick,
+//     //   ", roomId => ",
+//     //   data.roomId
+//     // );
 
-    nodeNameSpace.in(data.room).emit("message", {
-      msg: `${data.nick ? "" : "New user "}joined ${data.room} room`,
-      nick: data.nick,
-    });
-  });
+//     nodeNameSpace.in(data.room).emit("message", {
+//       msg: `${data.nick ? "" : "New user "}joined ${data.room} room`,
+//       nick: data.nick,
+//       date: data.date,
+//     });
+//   });
 
-  socket.on("message", (data) => {
-    console.log(
-      "message => ",
-      data.msg,
-      ", room => ",
-      data.room,
-      ", nick => ",
-      data.nick
-    );
+//   socket.on("message", (data) => {
+//     // console.log(data);
+//     // console.log(
+//     //   "message => ",
+//     //   data.msg,
+//     //   ", roomId => ",
+//     //   data.roomId,
+//     //   ", nick => ",
+//     //   data.nick
+//     // );
 
-    nodeNameSpace
-      .in(data.room)
-      .emit("message", { msg: data.msg, nick: data.nick });
-  });
-});
+//     nodeNameSpace.in(data.room).emit("message", {
+//       msg: data.msg,
+//       nick: data.nick,
+//       date: data.date,
+//     });
+//   });
+// });
 
-module.exports = server;
+// module.exports = io;
