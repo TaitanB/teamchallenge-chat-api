@@ -2,14 +2,19 @@ const { HttpError } = require("../helpers");
 const User = require("../models/user");
 
 const authenticate = async (req, res, next) => {
-  const { apikey } = req.headers;
+  const { apikey = "" } = req.headers;
+
+  if (!apikey) {
+    next(HttpError(401, "Token is missing"));
+  }
+
+  const token = apikey && apikey.trim();
 
   try {
-    const token = apikey.trim();
     const user = await User.findOne({ token });
 
-    if (!user) {
-      next(HttpError(401, "This user does not exist"));
+    if (!user || !user.token) {
+      next(HttpError(401, "Not authorized"));
     }
 
     req.user = user;

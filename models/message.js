@@ -39,6 +39,8 @@ const msgSchema = new Schema(
   { versionKey: false, timestamps: true }
 );
 
+msgSchema.index({ content: "text" });
+
 msgSchema.post("save", handleMongooseError);
 
 const Message = model("message", msgSchema);

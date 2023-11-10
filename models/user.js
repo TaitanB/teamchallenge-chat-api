@@ -1,7 +1,6 @@
 const { Schema, model } = require("mongoose");
 
 const { handleMongooseError } = require("../helpers");
-const { nameRegex } = require("../constants/constants");
 
 const userSchema = new Schema(
   {
@@ -11,7 +10,8 @@ const userSchema = new Schema(
     },
     name: {
       type: String,
-      match: nameRegex,
+      min: 2,
+      max: 26,
       required: [true, "Name is required"],
     },
     avatarURL: {

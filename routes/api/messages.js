@@ -6,7 +6,7 @@ const {
   //   editMsg,
   //   replyToMsg,
   //   deleteById,
-  //   getAllMsgByRoom,
+  getAllMsgByRoom,
 } = require("../../controllers/messages");
 
 const { msgSchema } = require("../../schemas/messages");
@@ -31,7 +31,7 @@ router.post(
 //   replyToMsg
 // );
 
-// router.get("/:roomId", authenticate, isValidId, getAllMsgByRoom);
+router.get("/:roomId", authenticate, isValidId, getAllMsgByRoom);
 
 // router.patch(
 //   "/:msgId",

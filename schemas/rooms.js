@@ -8,8 +8,8 @@ const roomAddSchema = Joi.object({
     "string.max": "The title must be no more 30 symbols.",
     "any.required": "The title field is required.",
   }),
-  description: Joi.string().max(30).messages({
-    "string.max": "The description must be no more 30 symbols.",
+  description: Joi.string().max(300).messages({
+    "string.max": "The description must be no more 300 symbols.",
   }),
   type: Joi.string().valid("public", "private").required().messages({
     "any.required": "The type is required.",
@@ -33,8 +33,8 @@ const roomEditSchema = Joi.object({
     "string.max": "The title must be no more 30 symbols.",
     "any.required": "The title field is required.",
   }),
-  description: Joi.string().max(30).messages({
-    "string.max": "The description must be no more 30 symbols.",
+  description: Joi.string().max(300).messages({
+    "string.max": "The description must be no more 300 symbols.",
   }),
 });
 

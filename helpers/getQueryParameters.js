@@ -17,12 +17,24 @@ const getQueryParameters = (options = {}, owner) => {
   const andConditions = [];
 
   if (query) {
-    andConditions.push({
+    const messageConditions = {
+      $or: [{ content: { $regex: query, $options: "i" } }],
+    };
+
+    const roomConditions = {
       $or: [
         { title: { $regex: query, $options: "i" } },
         { description: { $regex: query, $options: "i" } },
       ],
-    });
+    };
+
+    if (messageConditions.$or.length > 0) {
+      andConditions.push(messageConditions);
+    }
+
+    if (roomConditions.$or.length > 0) {
+      andConditions.push(roomConditions);
+    }
   }
 
   if (andConditions.length > 0) {

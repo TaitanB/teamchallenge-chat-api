@@ -162,16 +162,11 @@
             "schema": {
               "type": "string",
               "enum": [
-                "topic-1",
-                "topic-2",
-                "topic-3",
-                "topic-4",
-                "topic-5",
-                "topic-6",
-                "topic-7",
-                "topic-8",
-                "topic-9",
-                "topic-10"
+                "nutrition",
+                "exercises",
+                "mental health",
+                "prevention",
+                "healthy habits"
               ]
             },
             "description": "Filter rooms by topics"
@@ -261,16 +256,11 @@
             "schema": {
               "type": "string",
               "enum": [
-                "topic-1",
-                "topic-2",
-                "topic-3",
-                "topic-4",
-                "topic-5",
-                "topic-6",
-                "topic-7",
-                "topic-8",
-                "topic-9",
-                "topic-10"
+                "nutrition",
+                "exercises",
+                "mental health",
+                "prevention",
+                "healthy habits"
               ]
             },
             "description": "Filter rooms by topics"
@@ -554,6 +544,90 @@
             "content": {}
           }
         }
+      },
+      "get": {
+        "tags": ["Messages"],
+        "summary": "Get all messages by room",
+        "security": [{ "ApiKey": [] }],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Room's id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "description": "Page number for pagination"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "description": "Limit of items per page"
+          },
+          {
+            "in": "query",
+            "name": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Search query by messages"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "page": {
+                      "type": "integer",
+                      "description": "Page number for pagination",
+                      "example": 1
+                    },
+                    "perPage": {
+                      "type": "integer",
+                      "description": "Quantity per page",
+                      "example": 50
+                    },
+                    "totalPages": {
+                      "type": "integer",
+                      "description": "Total pages",
+                      "example": 5
+                    },
+                    "messages": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/AddMessageResponse"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {}
+          }
+        }
       }
     }
   },
@@ -609,18 +683,13 @@
             "type": "string",
             "description": "Room topic for public rooms",
             "enum": [
-              "topic-1",
-              "topic-2",
-              "topic-3",
-              "topic-4",
-              "topic-5",
-              "topic-6",
-              "topic-7",
-              "topic-8",
-              "topic-9",
-              "topic-10"
+              "nutrition",
+              "exercises",
+              "mental health",
+              "prevention",
+              "healthy habits"
             ],
-            "example": "topic-1"
+            "example": "nutrition"
           },
           "type": {
             "type": "string",
@@ -670,7 +739,7 @@
           "topic": {
             "type": "string",
             "description": "Room topic for public rooms",
-            "example": "topic-1"
+            "example": "nutrition"
           },
           "type": {
             "type": "string",
@@ -710,7 +779,7 @@
           "topic": {
             "type": "string",
             "description": "Room topic for public rooms",
-            "example": "topic-1"
+            "example": "nutrition"
           },
           "type": {
             "type": "string",
@@ -763,7 +832,7 @@
           "topic": {
             "type": "string",
             "description": "Room topic",
-            "example": "topic-1"
+            "example": "nutrition"
           },
           "type": {
             "type": "string",
@@ -823,7 +892,7 @@
           "content": {
             "type": "string",
             "description": "Message content",
-            "maxLength": 300,
+            "maxLength": 1000,
             "example": "Message content"
           }
         }
