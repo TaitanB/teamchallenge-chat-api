@@ -10,7 +10,6 @@ const getAllMsgByRoom = async (req, res) => {
   const skip = (page - 1) * limit;
 
   const queryParameters = getQueryParameters(req.query);
-  console.log(queryParameters);
 
   if (roomId) {
     queryParameters.roomId = roomId;
@@ -23,7 +22,9 @@ const getAllMsgByRoom = async (req, res) => {
   const result = await Message.find(queryParameters, "-updatedAt", {
     skip,
     limit,
-  }).sort({ createdAt: -1 });
+  })
+    .populate("owner", "_id name avatarURL")
+    .sort({ createdAt: -1 });
 
   res.status(200).json({ page, perPage, totalPages, messages: result });
 };

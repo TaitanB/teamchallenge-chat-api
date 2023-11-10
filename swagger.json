@@ -916,9 +916,24 @@
             "example": "Message content"
           },
           "owner": {
-            "type": "string",
-            "description": "Message's owner id",
-            "example": "nfuwjhretyhbvcbuiwrhty"
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "description": "Reply's owner id",
+                "example": "nfuwjhretyhbvcbuiwrhty"
+              },
+              "name": {
+                "type": "string",
+                "description": "Reply's owner name",
+                "example": "Mango"
+              },
+              "avatarURL": {
+                "type": "string",
+                "description": "Reply's owner avatar URL",
+                "example": "https://example.com/avatar.jpg"
+              }
+            }
           },
           "replys": {
             "type": "array",
