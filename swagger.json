@@ -162,11 +162,11 @@
             "schema": {
               "type": "string",
               "enum": [
-                "nutrition",
-                "exercises",
-                "mental health",
-                "prevention",
-                "healthy habits"
+                "NUTRITION",
+                "EXERCISES",
+                "MENTAL_HEALTH",
+                "PREVENTION",
+                "HEALTHY_HABITS"
               ]
             },
             "description": "Filter rooms by topics"
@@ -256,11 +256,11 @@
             "schema": {
               "type": "string",
               "enum": [
-                "nutrition",
-                "exercises",
-                "mental health",
-                "prevention",
-                "healthy habits"
+                "NUTRITION",
+                "EXERCISES",
+                "MENTAL_HEALTH",
+                "PREVENTION",
+                "HEALTHY_HABITS"
               ]
             },
             "description": "Filter rooms by topics"
@@ -717,13 +717,13 @@
             "type": "string",
             "description": "Room topic for public rooms",
             "enum": [
-              "nutrition",
-              "exercises",
-              "mental health",
-              "prevention",
-              "healthy habits"
+              "NUTRITION",
+              "EXERCISES",
+              "MENTAL_HEALTH",
+              "PREVENTION",
+              "HEALTHY_HABITS"
             ],
-            "example": "nutrition"
+            "example": "NUTRITION"
           },
           "type": {
             "type": "string",
@@ -773,7 +773,7 @@
           "topic": {
             "type": "string",
             "description": "Room topic for public rooms",
-            "example": "nutrition"
+            "example": "NUTRITION"
           },
           "type": {
             "type": "string",
@@ -813,7 +813,7 @@
           "topic": {
             "type": "string",
             "description": "Room topic for public rooms",
-            "example": "nutrition"
+            "example": "NUTRITION"
           },
           "type": {
             "type": "string",
@@ -866,7 +866,7 @@
           "topic": {
             "type": "string",
             "description": "Room topic",
-            "example": "nutrition"
+            "example": "NUTRITION"
           },
           "type": {
             "type": "string",

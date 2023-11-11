@@ -17,7 +17,7 @@ const roomAddSchema = Joi.object({
   topic: Joi.string().when("type", {
     is: "public",
     then: Joi.string()
-      .valid(...Object.values(topicsEnum))
+      .valid(...Object.keys(topicsEnum))
       .required()
       .messages({
         "any.required": "The topic is required for public rooms.",

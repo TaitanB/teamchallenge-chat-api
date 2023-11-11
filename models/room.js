@@ -22,7 +22,7 @@ const roomSchema = new Schema(
     },
     topic: {
       type: String,
-      enam: Object.values(topicsEnum),
+      enam: Object.keys(topicsEnum),
       required: function () {
         return this.type === "public";
       },

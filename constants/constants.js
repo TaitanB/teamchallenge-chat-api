@@ -1,24 +1,37 @@
 const perPage = 50;
 
 const topicsEnum = {
-  TOPIC_1: "nutrition",
-  TOPIC_2: "exercises",
-  TOPIC_3: "mental health",
-  TOPIC_4: "prevention",
-  TOPIC_5: "healthy habits",
+  NUTRITION: "Nutrition",
+  EXERCISES: "Physical exercises",
+  MENTAL_HEALTH: "Mental health",
+  PREVENTION: "Preventive medicine",
+  HEALTHY_HABITS: "Healthy habits",
 };
 
-const roomsEnum = {
-  ROOM_1: "Nutrition & healthy eating",
-  ROOM_2: "Sports for health",
-  ROOM_3: "Healthy mind",
-  ROOM_4: "Check-ups and preventive medicine",
-  ROOM_5: "Healthy habits",
-  ROOM_6: "About sleep",
-};
+// const topicsEnum = {
+//   NUTRITION: {
+//     en: "Nutrition",
+//     uk: "Здорове харчування",
+//   },
+//   EXERCISES: {
+//     en: "Physical exercises",
+//     uk: "Фізичні навантаження",
+//   },
+//   MENTAL_HEALTH: {
+//     en: "Mental health",
+//     uk: "Ментальне здоров'я",
+//   },
+//   PREVENTION: {
+//     en: "Preventive medicine",
+//     uk: "Превентивна медицина",
+//   },
+//   HEALTHY_HABITS: {
+//     en: "Healthy habits",
+//     uk: "Здорові звички",
+//   },
+// };
 
 module.exports = {
   perPage,
   topicsEnum,
-  roomsEnum,
 };

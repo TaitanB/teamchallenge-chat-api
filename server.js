@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const socketIO = require("socket.io");
 const app = require("./app");
 const { joinRoom } = require("./controllers/rooms/joinRoom");
-
+const addDefaultRooms = require("./servises/addDefaultRooms");
 const { DB_HOST, PORT } = process.env;
 
 mongoose.set("strictQuery", true);
@@ -11,7 +11,7 @@ mongoose
   .connect(DB_HOST)
   .then(() => {
     console.log("Database connection successful");
-    // app.listen(3001);
+    addDefaultRooms();
   })
   .catch((error) => {
     console.log(error.message);
