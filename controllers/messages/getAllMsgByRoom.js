@@ -4,7 +4,7 @@ const { ctrlWrapper } = require("../../decorators");
 const { getQueryParameters } = require("../../helpers");
 
 const getAllMsgByRoom = async (req, res) => {
-  const { roomId } = req.params;
+  const { id: roomId } = req.params;
 
   const { page = 1, limit = perPage } = req.query;
   const skip = (page - 1) * limit;

@@ -3,7 +3,7 @@ const defaultRooms = [
     title: "Nutrition & healthy eating",
     type: "public",
     topic: "NUTRITION",
-    owner: "654fd6e0f42d6d14e3336b3a",
+    owner: "654fe2a65b2f17ab64470ab6",
     description:
       "This chat is about a scientific approach to healthy eating - what, when, how to eat to stay healthy",
   },
@@ -11,7 +11,7 @@ const defaultRooms = [
     title: "Sports for health",
     type: "public",
     topic: "EXERCISES",
-    owner: "654fd6e0f42d6d14e3336b3a",
+    owner: "654fe2a65b2f17ab64470ab6",
     description:
       "Discussing what exercises are valuable for what, and at what age",
   },
@@ -19,7 +19,7 @@ const defaultRooms = [
     title: "Healthy mind",
     type: "public",
     topic: "MENTAL_HEALTH",
-    owner: "654fd6e0f42d6d14e3336b3a",
+    owner: "654fe2a65b2f17ab64470ab6",
     description:
       "How to stay mentally healthy nowadays, what to do and what to avoid",
   },
@@ -27,7 +27,7 @@ const defaultRooms = [
     title: "Check-ups and preventive medicine",
     type: "public",
     topic: "PREVENTION",
-    owner: "654fd6e0f42d6d14e3336b3a",
+    owner: "654fe2a65b2f17ab64470ab6",
     description:
       "Discussing what screenings to do and when to prevent diseases",
   },
@@ -35,7 +35,7 @@ const defaultRooms = [
     title: "Healthy habits",
     type: "public",
     topic: "HEALTHY_HABITS",
-    owner: "654fd6e0f42d6d14e3336b3a",
+    owner: "654fe2a65b2f17ab64470ab6",
     description:
       "Talking about daily routine that significantly improves health",
   },
@@ -43,7 +43,7 @@ const defaultRooms = [
     title: "About sleep",
     type: "public",
     topic: "HEALTHY_HABITS",
-    owner: "654fd6e0f42d6d14e3336b3a",
+    owner: "654fe2a65b2f17ab64470ab6",
     description:
       "Sound discussion about sleep: who, how much, in what position",
   },
