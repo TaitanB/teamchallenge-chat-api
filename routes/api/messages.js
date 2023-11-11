@@ -5,7 +5,7 @@ const {
   addMsg,
   //   editMsg,
   //   replyToMsg,
-  //   deleteById,
+  deleteById,
   getAllMsgByRoom,
 } = require("../../controllers/messages");
 
@@ -15,15 +15,9 @@ const { authenticate } = require("../../middlewares");
 
 const router = express.Router();
 
-router.post(
-  "/:roomId",
-  authenticate,
-  isValidId,
-  validateBody(msgSchema),
-  addMsg
-);
+router.post("/:id", authenticate, isValidId, validateBody(msgSchema), addMsg);
 
-// router.get(
+// router.patch(
 //   "/:roomId/:msgId",
 //   authenticate,
 //   isValidId,
@@ -31,16 +25,16 @@ router.post(
 //   replyToMsg
 // );
 
-router.get("/:roomId", authenticate, isValidId, getAllMsgByRoom);
+router.get("/:id", authenticate, isValidId, getAllMsgByRoom);
 
 // router.patch(
-//   "/:msgId",
+//   "/:id",
 //   authenticate,
 //   isValidId,
 //   validateBody(msgSchema),
 //   editMsg
 // );
 
-// router.delete("/:msgId", authenticate, isValidId, deleteById);
+router.delete("/:id", authenticate, isValidId, deleteById);
 
 module.exports = router;

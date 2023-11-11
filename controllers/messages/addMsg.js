@@ -5,7 +5,7 @@ const { ctrlWrapper } = require("../../decorators");
 
 const addMsg = async (req, res) => {
   const { _id: owner } = req.user;
-  const { roomId } = req.params;
+  const { id: roomId } = req.params;
 
   const result = await Message.create({
     ...req.body,
@@ -36,7 +36,7 @@ const addMsg = async (req, res) => {
   }
 
   await room.save();
-
+  console.log(result);
   res.status(201).json({ msg: result, room: room.title });
 };
 

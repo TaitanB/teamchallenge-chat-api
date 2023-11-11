@@ -628,6 +628,40 @@
             "content": {}
           }
         }
+      },
+      "delete": {
+        "tags": ["Messages"],
+        "summary": "Delete a message by id",
+        "security": [{ "ApiKey": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Message's id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
+          "404": {
+            "description": "Message not found",
+            "content": {}
+          }
+        }
       }
     }
   },
@@ -1006,7 +1040,7 @@
             "type": "string",
             "description": "Notification of successful deletion"
           },
-          "deletedRoomId": {
+          "deletedId": {
             "type": "string",
             "description": "Id of the deleted object"
           }

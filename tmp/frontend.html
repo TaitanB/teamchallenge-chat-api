@@ -177,18 +177,37 @@
 
             axios.get(`${server}/api/rooms/${roomId}`, {
               headers: {
-                'ApiKey': `${response.data.token}`
+                'ApiKey': `${token}`
               }
             })
               .then(function (response) {
-                // console.log(response.data);
+                console.log(response.data);
                 room = response.data.title
+                axios.get(`${server}/api/messages/${roomId}`, {
+                  headers: {
+                    'ApiKey': `${token}`
+                  }
+                })
+                  .then(function (response) {
+                    console.log(response.data);
+                    response.data.messages.map(msg => {
 
+                      messages.insertAdjacentHTML(
+                        'afterbegin',
+                        `<li><img src=${msg.owner.avatarURL} width="24" height="24" style="border-radius: 50%"><span style="color: red; font-weight: bold; font-style: italic">${msg.owner.name}</span>&nbsp;${msg.content}&nbsp;<i style="color: lightslategray;"">${msg.createdAt}</i></li>`
+                      );
+                    })
+
+                  })
+                  .catch(function (error) {
+                    console.error(error);
+                  });
                 initSocket(room, nick, date);
               })
               .catch(function (error) {
                 console.error(error);
               });
+
           })
           .catch(function (error) {
             console.error(error);

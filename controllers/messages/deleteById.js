@@ -1,22 +1,22 @@
-const Room = require("../../models/room");
+const Message = require("../../models/message");
 const { HttpError } = require("../../helpers");
 const { ctrlWrapper } = require("../../decorators");
 
 const deleteById = async (req, res) => {
-  const { id: roomId } = req.params;
+  const { id: msgId } = req.params;
   const { _id: owner } = req.user;
 
-  const result = await Room.findOneAndRemove({
-    $and: [{ _id: roomId }, { owner }],
+  const result = await Message.findOneAndRemove({
+    $and: [{ _id: msgId }, { owner }],
   });
 
   if (!result) {
-    throw HttpError(404, "Room not found");
+    throw HttpError(404, "Message not found");
   }
 
   res.json({
-    message: "Room deleted",
-    deletedId: roomId,
+    message: "Message deleted",
+    deletedId: msgId,
   });
 };
 

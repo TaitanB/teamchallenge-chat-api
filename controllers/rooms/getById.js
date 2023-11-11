@@ -3,7 +3,7 @@ const { HttpError } = require("../../helpers");
 const { ctrlWrapper } = require("../../decorators");
 
 const getById = async (req, res) => {
-  const { roomId } = req.params;
+  const { id: roomId } = req.params;
   const { _id: owner } = req.user;
 
   const room = await Room.findOne({ _id: roomId }, "").populate(

@@ -20,18 +20,18 @@ router.get("/public", getAllPublic);
 
 router.get("/owner", authenticate, getAllOwner);
 
-router.get("/:roomId", authenticate, isValidId, getById);
+router.get("/:id", authenticate, isValidId, getById);
 
 router.post("/", authenticate, validateBody(roomAddSchema), addRoom);
 
 router.patch(
-  "/:roomId",
+  "/:id",
   authenticate,
   isValidId,
   validateBody(roomEditSchema),
   editById
 );
 
-router.delete("/:roomId", authenticate, isValidId, deleteById);
+router.delete("/:id", authenticate, isValidId, deleteById);
 
 module.exports = router;
