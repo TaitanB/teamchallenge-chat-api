@@ -2,7 +2,8 @@ const express = require("express");
 const isValidId = require("../../middlewares/isValidId");
 
 const {
-  addRoom,
+  addPublicRoom,
+  addPrivateRoom,
   editById,
   deleteById,
   getAllPublic,
@@ -22,7 +23,20 @@ router.get("/owner", authenticate, getAllOwner);
 
 router.get("/:id", authenticate, isValidId, getById);
 
-router.post("/", authenticate, validateBody(roomAddSchema), addRoom);
+router.post(
+  "/public",
+  authenticate,
+  validateBody(roomAddSchema),
+  addPublicRoom
+);
+
+router.post(
+  "/private/:id",
+  authenticate,
+  isValidId,
+  validateBody(roomAddSchema),
+  addPrivateRoom
+);
 
 router.patch(
   "/:id",

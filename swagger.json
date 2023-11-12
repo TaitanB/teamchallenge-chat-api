@@ -215,6 +215,103 @@
             "content": {}
           }
         }
+      },
+      "post": {
+        "tags": ["Rooms"],
+        "summary": "Add new public room",
+        "security": [{ "ApiKey": [] }],
+        "produces": ["application/json"],
+        "requestBody": {
+          "description": "Room data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PublicRoomRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Room added",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicRoomResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Invalid token"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/rooms/private/{id}": {
+      "post": {
+        "tags": ["Rooms"],
+        "summary": "Add new private room",
+        "security": [{ "ApiKey": [] }],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Guest's id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "description": "Room data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PrivateRoomRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Room added",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrivateRoomResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Invalid token"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {}
+          }
+        }
       }
     },
     "/rooms/owner": {
@@ -320,61 +417,6 @@
         }
       }
     },
-    "/rooms": {
-      "post": {
-        "tags": ["Rooms"],
-        "summary": "Add new room",
-        "security": [{ "ApiKey": [] }],
-        "produces": ["application/json"],
-        "parameters": [
-          {
-            "in": "query",
-            "name": "guest",
-            "schema": {
-              "type": "string"
-            },
-            "description": "Room guest ID"
-          }
-        ],
-        "requestBody": {
-          "description": "Room data",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RoomRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Room added",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AddRoomResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Not authorized",
-            "content": {
-              "application/json": {
-                "example": {
-                  "message": "Invalid token"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {}
-          }
-        }
-      }
-    },
     "/rooms/{id}": {
       "get": {
         "tags": ["Rooms"],
@@ -395,7 +437,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/OneRoomResponse"
+                  "$ref": "#/components/schemas/PrivateRoomResponse"
                 }
               }
             }
@@ -441,7 +483,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/OneRoomResponse"
+                  "$ref": "#/components/schemas/PublicRoomResponse"
                 }
               }
             }
@@ -702,9 +744,9 @@
         }
       },
 
-      "RoomRequest": {
+      "PublicRoomRequest": {
         "type": "object",
-        "required": ["title", "type"],
+        "required": ["title", "type", "topic"],
         "properties": {
           "title": {
             "type": "string",
@@ -715,7 +757,7 @@
           },
           "topic": {
             "type": "string",
-            "description": "Room topic for public rooms",
+            "description": "Topic for public rooms",
             "enum": [
               "NUTRITION",
               "EXERCISES",
@@ -736,6 +778,25 @@
             "description": "Room description",
             "maxLength": 300,
             "example": "Room description, rules, etc."
+          }
+        }
+      },
+      "PrivateRoomRequest": {
+        "type": "object",
+        "required": ["title", "type"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "The title of the room",
+            "minLength": 4,
+            "maxLength": 30,
+            "example": "Room-1"
+          },
+          "type": {
+            "type": "string",
+            "description": "Room type",
+            "enum": ["public", "private"],
+            "example": "private"
           }
         }
       },
@@ -797,7 +858,7 @@
           }
         }
       },
-      "AddRoomResponse": {
+      "PublicRoomResponse": {
         "type": "object",
         "properties": {
           "_id": {
@@ -850,7 +911,7 @@
           }
         }
       },
-      "OneRoomResponse": {
+      "PrivateRoomResponse": {
         "type": "object",
         "properties": {
           "_id": {
@@ -863,20 +924,10 @@
             "description": "The title of the room",
             "example": "Room-1"
           },
-          "topic": {
-            "type": "string",
-            "description": "Room topic",
-            "example": "NUTRITION"
-          },
           "type": {
             "type": "string",
             "description": "Room type",
             "example": "public"
-          },
-          "description": {
-            "type": "string",
-            "description": "Room description",
-            "example": "Room description"
           },
           "owner": {
             "type": "object",

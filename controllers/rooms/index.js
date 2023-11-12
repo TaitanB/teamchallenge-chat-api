@@ -1,4 +1,5 @@
-const { addRoom } = require("./addRoom");
+const { addPublicRoom } = require("./addPublicRoom");
+const { addPrivateRoom } = require("./addPrivateRoom");
 const { editById } = require("./editById");
 const { deleteById } = require("./deleteById");
 const { getAllPublic } = require("./getAllPublic");
@@ -7,7 +8,8 @@ const { getById } = require("./getById");
 const { joinRoom } = require("./joinRoom");
 
 module.exports = {
-  addRoom,
+  addPublicRoom,
+  addPrivateRoom,
   editById,
   deleteById,
   getAllPublic,
