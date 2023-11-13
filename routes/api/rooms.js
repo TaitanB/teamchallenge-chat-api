@@ -9,6 +9,7 @@ const {
   getAllPublic,
   getAllOwner,
   getById,
+  getRoomUsers,
 } = require("../../controllers/rooms");
 
 const { roomAddSchema, roomEditSchema } = require("../../schemas/rooms");
@@ -22,6 +23,8 @@ router.get("/public", getAllPublic);
 router.get("/owner", authenticate, getAllOwner);
 
 router.get("/:id", authenticate, isValidId, getById);
+
+router.get("/:id/users", authenticate, isValidId, getRoomUsers);
 
 router.post(
   "/public",

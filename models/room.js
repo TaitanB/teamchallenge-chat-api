@@ -35,7 +35,13 @@ const roomSchema = new Schema(
       ref: "user",
       required: true,
     },
-    users: [String],
+    // users: [String],
+    users: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "user",
+      },
+    ],
   },
   { versionKey: false, timestamps: true }
 );

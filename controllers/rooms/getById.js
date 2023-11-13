@@ -1,4 +1,5 @@
 const Room = require("../../models/room");
+// const User = require("../../models/user");
 const { HttpError } = require("../../helpers");
 const { ctrlWrapper } = require("../../decorators");
 
@@ -15,11 +16,15 @@ const getById = async (req, res) => {
     throw HttpError(404, "Room not found");
   }
 
+  await room.populate("users", "_id name avatarURL");
+
   if (room.type === "public") {
     res.json(room);
   } else {
-    const user = room.users.find((user) => user === owner.toString());
-
+    // const user = room.users.find((user) => user === owner.toString());
+    const user = room.users.find(
+      (user) => user._id.toString() === owner.toString()
+    );
     if (!user) {
       throw HttpError(404, "User not found");
     }

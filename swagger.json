@@ -426,7 +426,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PrivateRoomResponse"
+                  "oneOf": [
+                    { "$ref": "#/components/schemas/PrivateRoomResponse" },
+                    { "$ref": "#/components/schemas/PublicRoomResponse" }
+                  ]
                 }
               }
             }

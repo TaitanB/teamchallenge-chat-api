@@ -5,6 +5,8 @@ const { deleteById } = require("./deleteById");
 const { getAllPublic } = require("./getAllPublic");
 const { getAllOwner } = require("./getAllOwner");
 const { getById } = require("./getById");
+const { getRoomUsers } = require("./getRoomUsers");
+
 const { joinRoom } = require("./joinRoom");
 
 module.exports = {
@@ -15,5 +17,6 @@ module.exports = {
   getAllPublic,
   getAllOwner,
   getById,
+  getRoomUsers,
   joinRoom,
 };
