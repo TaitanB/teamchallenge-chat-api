@@ -30,13 +30,7 @@ router.post(
   addPublicRoom
 );
 
-router.post(
-  "/private/:id",
-  authenticate,
-  isValidId,
-  validateBody(roomAddSchema),
-  addPrivateRoom
-);
+router.post("/private/:id", authenticate, isValidId, addPrivateRoom);
 
 router.patch(
   "/:id",

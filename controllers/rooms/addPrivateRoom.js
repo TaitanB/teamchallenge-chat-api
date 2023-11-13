@@ -14,7 +14,8 @@ const addPrivateRoom = async (req, res) => {
   }
 
   const room = await Room.create({
-    ...req.body,
+    title: user.name,
+    type: "private",
     owner,
   });
 

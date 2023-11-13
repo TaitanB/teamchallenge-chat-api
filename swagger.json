@@ -275,17 +275,6 @@
             "type": "string"
           }
         ],
-        "requestBody": {
-          "description": "Room data",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PrivateRoomRequest"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "Room added",
@@ -360,7 +349,7 @@
                 "HEALTHY_HABITS"
               ]
             },
-            "description": "Filter rooms by topics"
+            "description": "Filter public rooms by topics"
           },
           {
             "in": "query",
@@ -746,7 +735,7 @@
 
       "PublicRoomRequest": {
         "type": "object",
-        "required": ["title", "type", "topic"],
+        "required": ["title", "topic"],
         "properties": {
           "title": {
             "type": "string",
@@ -767,36 +756,11 @@
             ],
             "example": "NUTRITION"
           },
-          "type": {
-            "type": "string",
-            "description": "Room type",
-            "enum": ["public", "private"],
-            "example": "public"
-          },
           "description": {
             "type": "string",
             "description": "Room description",
             "maxLength": 300,
             "example": "Room description, rules, etc."
-          }
-        }
-      },
-      "PrivateRoomRequest": {
-        "type": "object",
-        "required": ["title", "type"],
-        "properties": {
-          "title": {
-            "type": "string",
-            "description": "The title of the room",
-            "minLength": 4,
-            "maxLength": 30,
-            "example": "Room-1"
-          },
-          "type": {
-            "type": "string",
-            "description": "Room type",
-            "enum": ["public", "private"],
-            "example": "private"
           }
         }
       },

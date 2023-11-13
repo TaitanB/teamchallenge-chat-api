@@ -36,10 +36,10 @@ const msgSchema = new Schema(
       required: true,
     },
   },
-  { versionKey: false, timestamps: true, expires: "1d" }
+  { versionKey: false, timestamps: true }
 );
 
-// .index({ createdAt: 1 }, { expireAfterSeconds: 7 * 24 * 60 * 60 })
+msgSchema.index({ createdAt: 1 }, { expireAfterSeconds: 1 * 24 * 60 * 60 });
 
 msgSchema.index({ content: "text" });
 

@@ -7,9 +7,11 @@ const roomSchema = new Schema(
   {
     title: {
       type: String,
-      min: 4,
+      min: 2,
       max: 30,
-      required: [true, "Title is required"],
+      required: function () {
+        return this.type === "public";
+      },
     },
     description: {
       type: String,
@@ -18,6 +20,7 @@ const roomSchema = new Schema(
     type: {
       type: String,
       enam: ["public", "private"],
+      default: "public",
       required: [true, "Type is required"],
     },
     topic: {

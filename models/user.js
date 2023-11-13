@@ -10,7 +10,7 @@ const userSchema = new Schema(
     name: {
       type: String,
       min: 2,
-      max: 26,
+      max: 30,
       required: [true, "Name is required"],
     },
     avatarURL: {
