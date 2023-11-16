@@ -1,5 +1,7 @@
 const perPage = 50;
 
+const textRegex = /^[A-Za-zА-Яа-яЁёЇїІіЄєҐґ\d\s.,&@'’():;!$*+/%-=-]*$/;
+
 const topicsEnum = {
   NUTRITION: "Nutrition",
   EXERCISES: "Physical exercises",
@@ -33,5 +35,6 @@ const topicsEnum = {
 
 module.exports = {
   perPage,
+  textRegex,
   topicsEnum,
 };

@@ -1,12 +1,13 @@
 const { Schema, model } = require("mongoose");
-
+const { textRegex } = require("../constants/constants");
 const { handleMongooseError } = require("../helpers");
 
 const msgSchema = new Schema(
   {
     content: {
       type: String,
-      max: 300,
+      match: textRegex,
+      max: 1000,
       required: [true],
     },
     replys: {
@@ -14,6 +15,7 @@ const msgSchema = new Schema(
         {
           content: {
             type: String,
+            match: textRegex,
             max: 300,
             required: [true],
           },
@@ -39,7 +41,7 @@ const msgSchema = new Schema(
   { versionKey: false, timestamps: true }
 );
 
-msgSchema.index({ createdAt: 1 }, { expireAfterSeconds: 1 * 24 * 60 * 60 });
+msgSchema.index({ createdAt: 1 }, { expireAfterSeconds: 14 * 24 * 60 * 60 });
 
 msgSchema.index({ content: "text" });
 

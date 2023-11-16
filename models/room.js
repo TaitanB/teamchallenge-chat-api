@@ -1,12 +1,13 @@
 const { Schema, model } = require("mongoose");
 
 const { handleMongooseError } = require("../helpers");
-const { topicsEnum } = require("../constants/constants");
+const { topicsEnum, textRegex } = require("../constants/constants");
 
 const roomSchema = new Schema(
   {
     title: {
       type: String,
+      match: textRegex,
       min: 2,
       max: 30,
       required: function () {
@@ -15,6 +16,7 @@ const roomSchema = new Schema(
     },
     description: {
       type: String,
+      match: textRegex,
       max: 300,
     },
     type: {
