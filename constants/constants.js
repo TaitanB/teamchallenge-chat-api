@@ -1,6 +1,10 @@
-const perPage = 50;
+const perPage = 6;
 
-const textRegex = /^[A-Za-zА-Яа-яЁёЇїІіЄєҐґ\d\s.,&@'’():;!$*+/%-=-]*$/;
+const msgPerPage = 50;
+
+const nameRegex = /^[A-Za-zА-Яа-яЁёЇїІіЄєҐґ\d\s'’-]*$/;
+
+const textRegex = /^[A-Za-zА-Яа-яЁёЇїІіЄєҐґ\d\s.,&@'’():;!?"$*+/%-=-]*$/;
 
 const topicsEnum = {
   NUTRITION: "Nutrition",
@@ -35,6 +39,8 @@ const topicsEnum = {
 
 module.exports = {
   perPage,
+  msgPerPage,
+  nameRegex,
   textRegex,
   topicsEnum,
 };

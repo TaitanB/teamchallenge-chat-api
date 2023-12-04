@@ -3,27 +3,20 @@ const { perPage } = require("../../constants/constants");
 const { ctrlWrapper } = require("../../decorators");
 const { getQueryParameters } = require("../../helpers");
 
-const getAllPublic = async (req, res) => {
+const getAllRooms = async (req, res) => {
   const { page = 1, limit = perPage } = req.query;
   const skip = (page - 1) * limit;
 
   const queryParameters = getQueryParameters(req.query);
 
-  const total = await Room.countDocuments({
-    ...queryParameters,
-    type: "public",
-  });
+  const total = await Room.countDocuments(queryParameters);
 
   const totalPages = Math.ceil(total / perPage);
 
-  const result = await Room.find(
-    { ...queryParameters, type: "public" },
-    "-owner -users",
-    {
-      skip,
-      limit,
-    }
-  ).sort({
+  const result = await Room.find(queryParameters, "-owner -users", {
+    skip,
+    limit,
+  }).sort({
     updatedAt: -1,
   });
 
@@ -31,5 +24,5 @@ const getAllPublic = async (req, res) => {
 };
 
 module.exports = {
-  getAllPublic: ctrlWrapper(getAllPublic),
+  getAllRooms: ctrlWrapper(getAllRooms),
 };

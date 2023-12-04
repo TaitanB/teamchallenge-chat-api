@@ -10,6 +10,10 @@ const {
   getAllOwner,
   getById,
   getRoomUsers,
+  getPublicOwner,
+  getPrivate,
+  getPublicNotOwn,
+  getAllRooms,
 } = require("../../controllers/rooms");
 
 const { roomAddSchema, roomEditSchema } = require("../../schemas/rooms");
@@ -21,6 +25,14 @@ const router = express.Router();
 router.get("/public", getAllPublic);
 
 router.get("/owner", authenticate, getAllOwner);
+
+router.get("/", authenticate, getAllRooms);
+
+router.get("/public/owner", authenticate, getPublicOwner);
+
+router.get("/private", authenticate, getPrivate);
+
+router.get("/public/notown", authenticate, getPublicNotOwn);
 
 router.get("/:id", authenticate, isValidId, getById);
 

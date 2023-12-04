@@ -260,6 +260,115 @@
         }
       }
     },
+    "/rooms": {
+      "get": {
+        "tags": ["Rooms"],
+        "summary": "Get all rooms",
+        "security": [{ "ApiKey": [] }],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "description": "Page number for pagination"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "description": "Limit of items per page"
+          },
+          {
+            "in": "query",
+            "name": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Search query by rooms"
+          },
+          {
+            "in": "query",
+            "name": "topic",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "NUTRITION",
+                "EXERCISES",
+                "MENTAL_HEALTH",
+                "PREVENTION",
+                "HEALTHY_HABITS"
+              ]
+            },
+            "description": "Filter rooms by topics"
+          },
+          {
+            "in": "query",
+            "name": "type",
+            "schema": {
+              "type": "string",
+              "enum": ["public", "private"]
+            },
+            "description": "Filter rooms by type"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "page": {
+                      "type": "integer",
+                      "description": "Page number for pagination",
+                      "example": 1
+                    },
+                    "perPage": {
+                      "type": "integer",
+                      "description": "Quantity per page",
+                      "example": 6
+                    },
+                    "totalPages": {
+                      "type": "integer",
+                      "description": "Total pages",
+                      "example": 5
+                    },
+                    "rooms": {
+                      "type": "array",
+                      "items": {
+                        "oneOf": [
+                          {
+                            "$ref": "#/components/schemas/PrivateRoomResponse"
+                          },
+                          { "$ref": "#/components/schemas/PublicRoomResponse" }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {}
+          }
+        }
+      }
+    },
+
     "/rooms/private/{id}": {
       "post": {
         "tags": ["Rooms"],
@@ -377,7 +486,7 @@
                     "perPage": {
                       "type": "integer",
                       "description": "Quantity per page",
-                      "example": 10
+                      "example": 6
                     },
                     "totalPages": {
                       "type": "integer",
@@ -387,7 +496,279 @@
                     "rooms": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/RoomResponse"
+                        "oneOf": [
+                          {
+                            "$ref": "#/components/schemas/PrivateRoomResponse"
+                          },
+                          { "$ref": "#/components/schemas/PublicRoomResponse" }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/rooms/public/owner": {
+      "get": {
+        "tags": ["Rooms"],
+        "summary": "Get all public rooms for owner",
+        "security": [{ "ApiKey": [] }],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "description": "Page number for pagination"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "description": "Limit of items per page"
+          },
+          {
+            "in": "query",
+            "name": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Search query by rooms"
+          },
+          {
+            "in": "query",
+            "name": "topic",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "NUTRITION",
+                "EXERCISES",
+                "MENTAL_HEALTH",
+                "PREVENTION",
+                "HEALTHY_HABITS"
+              ]
+            },
+            "description": "Filter public rooms by topics"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "page": {
+                      "type": "integer",
+                      "description": "Page number for pagination",
+                      "example": 1
+                    },
+                    "perPage": {
+                      "type": "integer",
+                      "description": "Quantity per page",
+                      "example": 6
+                    },
+                    "totalPages": {
+                      "type": "integer",
+                      "description": "Total pages",
+                      "example": 5
+                    },
+                    "rooms": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/PublicRoomResponse"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/rooms/public/notown": {
+      "get": {
+        "tags": ["Rooms"],
+        "summary": "Get all public rooms, except for your own",
+        "security": [{ "ApiKey": [] }],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "description": "Page number for pagination"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "description": "Limit of items per page"
+          },
+          {
+            "in": "query",
+            "name": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Search query by rooms"
+          },
+          {
+            "in": "query",
+            "name": "topic",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "NUTRITION",
+                "EXERCISES",
+                "MENTAL_HEALTH",
+                "PREVENTION",
+                "HEALTHY_HABITS"
+              ]
+            },
+            "description": "Filter public rooms by topics"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "page": {
+                      "type": "integer",
+                      "description": "Page number for pagination",
+                      "example": 1
+                    },
+                    "perPage": {
+                      "type": "integer",
+                      "description": "Quantity per page",
+                      "example": 6
+                    },
+                    "totalPages": {
+                      "type": "integer",
+                      "description": "Total pages",
+                      "example": 5
+                    },
+                    "rooms": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/PublicRoomResponse"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/rooms/private": {
+      "get": {
+        "tags": ["Rooms"],
+        "summary": "Get all private rooms for owner",
+        "security": [{ "ApiKey": [] }],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "description": "Page number for pagination"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "description": "Limit of items per page"
+          },
+          {
+            "in": "query",
+            "name": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Search query by rooms"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "page": {
+                      "type": "integer",
+                      "description": "Page number for pagination",
+                      "example": 1
+                    },
+                    "perPage": {
+                      "type": "integer",
+                      "description": "Quantity per page",
+                      "example": 6
+                    },
+                    "totalPages": {
+                      "type": "integer",
+                      "description": "Total pages",
+                      "example": 5
+                    },
+                    "rooms": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/PrivateRoomResponse"
                       }
                     }
                   }
@@ -889,12 +1270,12 @@
           "title": {
             "type": "string",
             "description": "The title of the room",
-            "example": "Room-1"
+            "example": "Mary"
           },
           "type": {
             "type": "string",
             "description": "Room type",
-            "example": "public"
+            "example": "private"
           },
           "owner": {
             "type": "object",

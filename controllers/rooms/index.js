@@ -6,6 +6,10 @@ const { getAllPublic } = require("./getAllPublic");
 const { getAllOwner } = require("./getAllOwner");
 const { getById } = require("./getById");
 const { getRoomUsers } = require("./getRoomUsers");
+const { getPrivate } = require("./getPrivate");
+const { getPublicNotOwn } = require("./getPublicNotOwn");
+const { getPublicOwner } = require("./getPublicOwner");
+const { getAllRooms } = require("./getAllRooms");
 
 const { joinRoom } = require("./joinRoom");
 
@@ -19,4 +23,8 @@ module.exports = {
   getById,
   getRoomUsers,
   joinRoom,
+  getPublicOwner,
+  getPublicNotOwn,
+  getPrivate,
+  getAllRooms,
 };

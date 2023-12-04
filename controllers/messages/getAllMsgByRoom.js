@@ -1,10 +1,12 @@
 const Message = require("../../models/message");
-const { perPage } = require("../../constants/constants");
+const { msgPerPage } = require("../../constants/constants");
 const { ctrlWrapper } = require("../../decorators");
 const { getQueryParameters } = require("../../helpers");
 
 const getAllMsgByRoom = async (req, res) => {
   const { id: roomId } = req.params;
+
+  const perPage = msgPerPage;
 
   const { page = 1, limit = perPage } = req.query;
   const skip = (page - 1) * limit;
