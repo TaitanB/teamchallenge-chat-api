@@ -24,10 +24,10 @@ const addMsg = async (req, res) => {
     throw HttpError(404, "Room not found");
   }
 
-  const user = room.users.find((user) => user === owner.toString());
+  const user = room.users.find((user) => user.toString() === owner.toString());
 
   if (!user) {
-    room.users.push(user);
+    room.users.push(owner);
   }
 
   await room.save();
