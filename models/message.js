@@ -41,7 +41,7 @@ const msgSchema = new Schema(
   { versionKey: false, timestamps: true }
 );
 
-msgSchema.index({ createdAt: 1 }, { expireAfterSeconds: 14 * 24 * 60 * 60 });
+// msgSchema.index({ createdAt: 1 }, { expireAfterSeconds: 14 * 24 * 60 * 60 });
 
 msgSchema.index({ content: "text" });
 

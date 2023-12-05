@@ -27,7 +27,7 @@ const addMsg = async (req, res) => {
   const user = room.users.find((user) => user === owner.toString());
 
   if (!user) {
-    room.users.push(owner);
+    room.users.push(user);
   }
 
   await room.save();
