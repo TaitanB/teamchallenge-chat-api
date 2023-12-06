@@ -4,17 +4,10 @@ const joinRoom = (io) => {
   const roomNameSpace = io.of("/roomNameSpace");
 
   console.log("joinRoom");
+
   roomNameSpace.on("connection", (socket) => {
     socket.on("join", (data) => {
       socket.join(data.room);
-      // console.log(
-      //   "room => ",
-      //   data.room,
-      //   ", nick => ",
-      //   data.nick,
-      //   ", roomId => ",
-      //   data.roomId
-      // );
 
       roomNameSpace.in(data.room).emit("message", {
         msg: `${data.nick ? "" : "New user "}joined ${data.room} room`,
@@ -24,15 +17,6 @@ const joinRoom = (io) => {
     });
 
     socket.on("message", (data) => {
-      // console.log(
-      //   "message => ",
-      //   data.msg,
-      //   ", roomId => ",
-      //   data.roomId,
-      //   ", nick => ",
-      //   data.nick
-      // );
-
       roomNameSpace.in(data.room).emit("message", {
         msg: data.msg,
         nick: data.nick,
@@ -40,15 +24,49 @@ const joinRoom = (io) => {
       });
     });
 
+    const typingUsers = {};
+
     socket.on("user-start-write", (data) => {
-      // console.log(data);
-      roomNameSpace.in(data.room).emit("user-start-write", { nick: data.nick });
+      const { userId, nick, room } = data;
+
+      if (!typingUsers[room]) {
+        typingUsers[room] = [];
+      }
+
+      if (!typingUsers[room].some((user) => user.id === userId)) {
+        typingUsers[room].push({ id: userId, nick: nick });
+        updateTypingStatus(room);
+      }
     });
 
     socket.on("user-end-write", (data) => {
-      // console.log(data);
-      roomNameSpace.in(data.room).emit("user-end-write", { nick: data.nick });
+      const { userId, room } = data;
+
+      if (typingUsers[room]) {
+        const index = typingUsers[room].findIndex((user) => user.id === userId);
+        if (index !== -1) {
+          typingUsers[room].splice(index, 1);
+          updateTypingStatus(room);
+        }
+      }
     });
+
+    function updateTypingStatus(room) {
+      const usersArray = typingUsers[room] || [];
+      roomNameSpace
+        .in(room)
+        .emit("update-typing-status", { typingUsers: usersArray });
+    }
+
+    //   socket.on("user-start-write", (data) => {
+    //     // console.log(data);
+    //     roomNameSpace.in(data.room).emit("user-start-write", { nick: data.nick });
+    //   });
+
+    //   socket.on("user-end-write", (data) => {
+    //     // console.log(data);
+    //     roomNameSpace.in(data.room).emit("user-end-write", { nick: data.nick });
+    //   });
   });
 };
 

@@ -1,10 +1,10 @@
 const perPage = 6;
 
-const msgPerPage = 50;
+const msgPerPage = 10; // 50
 
-const nameRegex = /^[A-Za-zА-Яа-яЁёЇїІіЄєҐґ\d\s'’-]*$/;
+const nameRegex = /^[A-Za-zА-Яа-яЁёЇїІіЄєҐґ\d\s'’._-]*$/;
 
-const textRegex = /^[A-Za-zА-Яа-яЁёЇїІіЄєҐґ\d\s.,&@'’():;!?"$*+/%-=-]*$/;
+const textRegex = /^[A-Za-zА-Яа-яЁёЇїІіЄєҐґ\d\s.,&@'’():;!?"$*+/%-=_]*$/;
 
 const topicsEnum = {
   NUTRITION: "Nutrition",
