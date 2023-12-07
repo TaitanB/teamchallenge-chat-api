@@ -98,7 +98,7 @@
     let token;
     const date = new Date()
     const roomId = "656f8847f1b1dd4e004f364a"
-    const userId = "6570d95cfbd55f937d04c45c"
+    // const userId = "6570d95cfbd55f937d04c45c"
     // const server = "https://teamchallenge-chat-api.onrender.com"
     const server = "http://localhost:3001"
 
@@ -116,25 +116,25 @@
         socket.emit('join', { room, nick, date });
       });
 
-      socket.on("update-typing-status", (data) => {
-        const { typingUsers } = data;
+      // socket.on("update-typing-status", (data) => {
+      //   const { typingUsers } = data;
 
-        updateTypingDisplay(typingUsers);
+      //   updateTypingDisplay(typingUsers);
+      // });
+
+      socket.on('user-start-write', ({ nick }) => {
+        messages.insertAdjacentHTML(
+          'afterbegin',
+          `<li><span style="color: green">${nick} started typing...</span></li>`
+        );
       });
 
-      // socket.on('user-start-write', ({ nick }) => {
-      //   messages.insertAdjacentHTML(
-      //     'afterbegin',
-      //     `<li><span style="color: green">${nick} started typing...</span></li>`
-      //   );
-      // });
-
-      // socket.on('user-end-write', ({ nick }) => {
-      //   messages.insertAdjacentHTML(
-      //     'afterbegin',
-      //     `<li><span style="color: red">${nick} stopped typing.</span></li>`
-      //   );
-      // });
+      socket.on('user-end-write', ({ nick }) => {
+        messages.insertAdjacentHTML(
+          'afterbegin',
+          `<li><span style="color: red">${nick} stopped typing.</span></li>`
+        );
+      });
 
       socket.on('message', ({ nick, msg, date }) => {
         messages.insertAdjacentHTML(
@@ -144,25 +144,25 @@
       });
     };
 
-    function updateTypingDisplay(users) {
-      const messages = document.getElementById("messages");
+    // function updateTypingDisplay(users) {
+    //   const messages = document.getElementById("messages");
 
-      if (users.length === 0) {
-        return;
-      } else if (users.length === 1) {
-        users.forEach((user) => {
-          messages.insertAdjacentHTML(
-            'afterbegin',
-            `<li><span style="color: red; font-weight: bold;">${user.nick} is typing...</span></li>`
-          );
-        })
-      } else {
-        messages.insertAdjacentHTML(
-          'afterbegin',
-          `<li><span style="color: red; font-weight: bold;">${users.length} users are typing...</span></li>`
-        );
-      }
-    }
+    //   if (users.length === 0) {
+    //     return;
+    //   } else if (users.length === 1) {
+    //     users.forEach((user) => {
+    //       messages.insertAdjacentHTML(
+    //         'afterbegin',
+    //         `<li><span style="color: red; font-weight: bold;">${user.nick} is typing...</span></li>`
+    //       );
+    //     })
+    //   } else {
+    //     messages.insertAdjacentHTML(
+    //       'afterbegin',
+    //       `<li><span style="color: red; font-weight: bold;">${users.length} users are typing...</span></li>`
+    //     );
+    //   }
+    // }
 
     const nickForm = document.getElementById('nickForm');
     const msgForm = document.getElementById('msgForm');
@@ -172,14 +172,14 @@
 
     msgField.addEventListener("input", () => {
       if (!isTyping) {
-        socket.emit("user-start-write", { userId: userId, nick: nick, room: room });
+        socket.emit("user-start-write", { nick: nick, room: room });
         isTyping = true;
       }
     });
 
     msgField.addEventListener("blur", () => {
       if (isTyping) {
-        socket.emit("user-end-write", { userId: userId, nick: nick, room: room });
+        socket.emit("user-end-write", { nick: nick, room: room });
         isTyping = false;
       }
     });

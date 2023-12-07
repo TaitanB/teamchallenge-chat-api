@@ -17,14 +17,10 @@ const getPublicOwner = async (req, res) => {
 
   const totalPages = Math.ceil(total / perPage);
 
-  const result = await Room.find(
-    { ...queryParameters, type: "public" },
-    "-owner -users",
-    {
-      skip,
-      limit,
-    }
-  ).sort({ updatedAt: -1 });
+  const result = await Room.find({ ...queryParameters, type: "public" }, "", {
+    skip,
+    limit,
+  }).sort({ updatedAt: -1 });
 
   res.status(200).json({ page, perPage, totalPages, rooms: result });
 };

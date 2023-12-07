@@ -13,7 +13,7 @@ const getAllRooms = async (req, res) => {
 
   const totalPages = Math.ceil(total / perPage);
 
-  const result = await Room.find(queryParameters, "-owner -users", {
+  const result = await Room.find(queryParameters, "", {
     skip,
     limit,
   }).sort({
