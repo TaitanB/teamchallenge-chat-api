@@ -98,7 +98,7 @@
     let token;
     const date = new Date()
     const roomId = "656f8847f1b1dd4e004f364a"
-    // const userId = "6570d95cfbd55f937d04c45c"
+    const userId = "6570d95cfbd55f937d04c45c"
     // const server = "https://teamchallenge-chat-api.onrender.com"
     const server = "http://localhost:3001"
 
@@ -113,8 +113,15 @@
       });
 
       socket.on('connect', () => {
+        console.log(room, nick, date)
         socket.emit('join', { room, nick, date });
       });
+
+      window.addEventListener('beforeunload', () => {
+        // Відправити подію leave перед виходом зі сторінки
+        socket.emit('leave', { room });
+      });
+
 
       // socket.on("update-typing-status", (data) => {
       //   const { typingUsers } = data;
@@ -122,17 +129,17 @@
       //   updateTypingDisplay(typingUsers);
       // });
 
-      socket.on('user-start-write', ({ nick }) => {
+      socket.on('user-start-write', ({ id, nick }) => {
         messages.insertAdjacentHTML(
           'afterbegin',
-          `<li><span style="color: green">${nick} started typing...</span></li>`
+          `<li><span style="color: green">${id, nick} started typing...</span></li>`
         );
       });
 
-      socket.on('user-end-write', ({ nick }) => {
+      socket.on('user-end-write', ({ id, nick }) => {
         messages.insertAdjacentHTML(
           'afterbegin',
-          `<li><span style="color: red">${nick} stopped typing.</span></li>`
+          `<li><span style="color: red">${id, nick} stopped typing.</span></li>`
         );
       });
 
@@ -172,14 +179,14 @@
 
     msgField.addEventListener("input", () => {
       if (!isTyping) {
-        socket.emit("user-start-write", { nick: nick, room: room });
+        socket.emit("user-start-write", { id: userId, nick: nick, room: room });
         isTyping = true;
       }
     });
 
     msgField.addEventListener("blur", () => {
       if (isTyping) {
-        socket.emit("user-end-write", { nick: nick, room: room });
+        socket.emit("user-end-write", { id: userId, nick: nick, room: room });
         isTyping = false;
       }
     });
