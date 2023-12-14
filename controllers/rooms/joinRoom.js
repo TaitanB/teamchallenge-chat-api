@@ -24,9 +24,10 @@ const joinRoom = (io) => {
 
     socket.on("message", (data) => {
       roomNameSpace.in(data.room).emit("message", {
-        msg: data.msg,
-        nick: data.nick,
-        date: data.date,
+        data: data.msg,
+        // msg: data.msg,
+        // nick: data.nick,
+        // date: data.date,
       });
     });
 
