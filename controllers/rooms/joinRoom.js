@@ -7,7 +7,6 @@ const joinRoom = (io) => {
 
   roomNameSpace.on("connection", (socket) => {
     socket.on("join", (data) => {
-      // console.log("join", data);
       socket.join(data.room);
 
       // roomNameSpace.in(data.room).emit("message", {
@@ -18,7 +17,6 @@ const joinRoom = (io) => {
     });
 
     socket.on("leave", (data) => {
-      // console.log("leave", data);
       socket.leave(data.room);
     });
 
@@ -66,14 +64,12 @@ const joinRoom = (io) => {
     // }
 
     socket.on("user-start-write", (data) => {
-      // console.log(data);
       roomNameSpace
         .in(data.room)
         .emit("user-start-write", { id: data.userId, nick: data.nick });
     });
 
     socket.on("user-end-write", (data) => {
-      // console.log(data);
       roomNameSpace
         .in(data.room)
         .emit("user-end-write", { id: data.userId, nick: data.nick });

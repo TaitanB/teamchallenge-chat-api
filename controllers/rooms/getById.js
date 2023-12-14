@@ -1,5 +1,4 @@
 const Room = require("../../models/room");
-// const User = require("../../models/user");
 const { HttpError } = require("../../helpers");
 const { ctrlWrapper } = require("../../decorators");
 
@@ -21,7 +20,6 @@ const getById = async (req, res) => {
   if (room.type === "public") {
     res.json(room);
   } else {
-    // const user = room.users.find((user) => user === owner.toString());
     const user = room.users.find(
       (user) => user._id.toString() === owner.toString()
     );
