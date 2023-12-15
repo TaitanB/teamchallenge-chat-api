@@ -17,6 +17,10 @@ const router = express.Router();
 
 router.post("/:id", authenticate, isValidId, validateBody(msgSchema), addMsg);
 
+router.get("/:id", authenticate, isValidId, getAllMsgByRoom);
+
+router.delete("/:id", authenticate, isValidId, deleteById);
+
 // router.patch(
 //   "/:roomId/:msgId",
 //   authenticate,
@@ -25,8 +29,6 @@ router.post("/:id", authenticate, isValidId, validateBody(msgSchema), addMsg);
 //   replyToMsg
 // );
 
-router.get("/:id", authenticate, isValidId, getAllMsgByRoom);
-
 // router.patch(
 //   "/:id",
 //   authenticate,
@@ -34,7 +36,5 @@ router.get("/:id", authenticate, isValidId, getAllMsgByRoom);
 //   validateBody(msgSchema),
 //   editMsg
 // );
-
-router.delete("/:id", authenticate, isValidId, deleteById);
 
 module.exports = router;

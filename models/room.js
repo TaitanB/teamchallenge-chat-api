@@ -47,7 +47,7 @@ const roomSchema = new Schema(
   { versionKey: false, timestamps: true }
 );
 
-roomSchema.index({ title: "text", description: "text" });
+roomSchema.index({ title: "text" }, { description: "text" });
 
 roomSchema.post("save", handleMongooseError);
 
