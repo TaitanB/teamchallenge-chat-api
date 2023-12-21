@@ -385,12 +385,22 @@
           }
         ],
         "responses": {
-          "200": {
+          "201": {
             "description": "Room added",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PrivateRoomResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "If a private room with this guest already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExistsResponse"
                 }
               }
             }
@@ -1470,6 +1480,20 @@
           "deletedId": {
             "type": "string",
             "description": "Id of the deleted object"
+          }
+        }
+      },
+
+      "ExistsResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Notification of the existence of a private room"
+          },
+          "roomId": {
+            "type": "string",
+            "description": "Id of the existing private room"
           }
         }
       }

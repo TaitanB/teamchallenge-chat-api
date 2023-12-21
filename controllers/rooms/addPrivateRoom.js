@@ -13,11 +13,21 @@ const addPrivateRoom = async (req, res) => {
     throw HttpError(404, "Guest not found");
   }
 
-  const result = await Room.find({ owner, type: "private" }, "", {});
+  const queryParameters = [];
 
-  result.find((room) => room.users._id === guest);
+  queryParameters.$or = [{ owner: owner }, { users: owner }];
 
-  if (result.length === 0) {
+  const result = await Room.find(
+    { ...queryParameters, type: "private" },
+    "",
+    {}
+  );
+
+  const room = result.find((room) =>
+    room.users.some((user) => user.toString() === guest.toString())
+  );
+
+  if (!room) {
     const room = await Room.create({
       title: user.name,
       type: "private",
@@ -30,7 +40,10 @@ const addPrivateRoom = async (req, res) => {
 
     res.status(201).json(room);
   } else {
-    res.json({ message: "Private room with this guest already exists!" });
+    res.status(200).json({
+      message: "Private room with this guest already exists!",
+      roomId: room._id,
+    });
   }
 };
 
