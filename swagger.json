@@ -1270,7 +1270,7 @@
           "title": {
             "type": "string",
             "description": "The title of the room",
-            "example": "Mary"
+            "example": "Olga"
           },
           "type": {
             "type": "string",
@@ -1283,7 +1283,7 @@
               "_id": {
                 "type": "string",
                 "description": "Room's owner id",
-                "example": "nfuwjhretyhbvcbuiwrhty"
+                "example": "656f8d000b67852caa0579b1"
               },
               "name": {
                 "type": "string",
@@ -1300,10 +1300,38 @@
           "users": {
             "type": "array",
             "items": {
-              "type": "string",
-              "description": "Room's user id",
-              "example": "32143dshtuv2dfyuijhgf45474"
-            }
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "description": "Room's owner id",
+                  "example": "656f8d000b67852caa0579b1"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "Room's owner name",
+                  "example": "Mango"
+                },
+                "avatarURL": {
+                  "type": "string",
+                  "description": "Room's owner avatar URL",
+                  "example": "https://example.com/avatar.jpg"
+                }
+              }
+            },
+            "example": [
+              {
+                "_id": "656f8e5db4abf60f16393a42",
+                "name": "Olga",
+                "avatarURL": "https://example.com/avatar.jpg"
+              },
+              {
+                "_id": "656f8d000b67852caa0579b1",
+                "name": "Mango",
+                "avatarURL": "https://example.com/avatar.jpg"
+              }
+            ],
+            "maxItems": 2
           },
           "createdAt": {
             "type": "Date",

@@ -17,12 +17,23 @@ const getPrivate = async (req, res) => {
 
   const totalPages = Math.ceil(total / perPage);
 
-  const result = await Room.find(queryParameters, "", {
+  let rooms = await Room.find(queryParameters, "", {
     skip,
     limit,
-  }).sort({ updatedAt: -1 });
+  })
+    .populate("owner", "_id name avatarURL")
+    .populate("users", "_id name avatarURL")
+    .sort({ updatedAt: -1 });
 
-  res.status(200).json({ page, perPage, totalPages, rooms: result });
+  rooms = rooms.map((room) => {
+    const otherUser = room.users.find(
+      (user) => String(user._id) !== String(owner)
+    );
+    room.title = otherUser ? otherUser.name : "Private Room";
+    return room;
+  });
+
+  res.status(200).json({ page, perPage, totalPages, rooms: rooms });
 };
 
 module.exports = {
