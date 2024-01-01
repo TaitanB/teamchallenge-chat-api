@@ -24,7 +24,7 @@ const getAllPublic = async (req, res) => {
       limit,
     }
   ).sort({
-    updatedAt: -1,
+    createdAt: 1,
   });
 
   res.status(200).json({ page, perPage, totalPages, rooms: result });

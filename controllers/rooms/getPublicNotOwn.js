@@ -29,7 +29,7 @@ const getPublicNotOwn = async (req, res) => {
       skip,
       limit,
     }
-  ).sort({ updatedAt: -1 });
+  ).sort({ createdAt: 1 });
 
   res.status(200).json({ page, perPage, totalPages, rooms: result });
 };

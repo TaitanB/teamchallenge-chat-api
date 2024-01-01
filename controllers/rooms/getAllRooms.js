@@ -16,9 +16,11 @@ const getAllRooms = async (req, res) => {
   const result = await Room.find(queryParameters, "", {
     skip,
     limit,
-  }).sort({
-    updatedAt: -1,
-  });
+  })
+    .populate("users", "_id name avatarURL")
+    .sort({
+      updatedAt: -1,
+    });
 
   res.status(200).json({ page, perPage, totalPages, rooms: result });
 };
