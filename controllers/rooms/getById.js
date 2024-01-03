@@ -26,6 +26,13 @@ const getById = async (req, res) => {
     if (!user) {
       throw HttpError(404, "User not found");
     }
+
+    const otherUser = room.users.find(
+      (user) => String(user._id) !== String(owner)
+    );
+    room.title = otherUser ? otherUser.name : "Private Room";
+    room.img = otherUser ? otherUser.avatarURL : "";
+
     res.json(room);
   }
 };

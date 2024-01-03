@@ -15,8 +15,9 @@ const roomAddSchema = Joi.object({
     .valid(...Object.keys(topicsEnum))
     .required()
     .messages({
-      "any.required": "The topic is required.",
+      "any.required": "The topic is required for public rooms.",
     }),
+  img: Joi.string(),
 });
 
 // const roomSchema = Joi.object({

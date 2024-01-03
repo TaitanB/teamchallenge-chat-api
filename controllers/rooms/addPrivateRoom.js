@@ -31,6 +31,7 @@ const addPrivateRoom = async (req, res) => {
     const room = await Room.create({
       title: user.name,
       type: "private",
+      img: user.avatarURL,
       owner,
     });
 

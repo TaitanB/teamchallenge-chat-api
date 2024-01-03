@@ -30,6 +30,7 @@ const getPrivate = async (req, res) => {
       (user) => String(user._id) !== String(owner)
     );
     room.title = otherUser ? otherUser.name : "Private Room";
+    room.img = otherUser ? otherUser.avatarURL : "";
     return room;
   });
 

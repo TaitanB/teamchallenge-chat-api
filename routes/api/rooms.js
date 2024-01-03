@@ -26,7 +26,7 @@ router.get("/public", getAllPublic);
 
 router.get("/owner", authenticate, getAllOwner);
 
-router.get("/", authenticate, getAllRooms);
+router.get("/", authenticate, getAllRooms); // потрібно видалити
 
 router.get("/public/owner", authenticate, getPublicOwner);
 
