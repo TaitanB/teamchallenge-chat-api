@@ -7,7 +7,7 @@ const getRoomsMember = (rooms, owner) => {
     if (roomMember) {
       roomMember = { room: room, member: true };
     } else {
-      roomMember = { room: room };
+      roomMember = { room: room, member: false };
     }
 
     return roomMember;
