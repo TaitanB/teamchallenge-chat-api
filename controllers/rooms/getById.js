@@ -1,6 +1,7 @@
 const Room = require("../../models/room");
 const { HttpError } = require("../../helpers");
 const { ctrlWrapper } = require("../../decorators");
+const { changeInfoMember } = require("../../helpers");
 
 const getById = async (req, res) => {
   const { id: roomId } = req.params;
@@ -27,11 +28,7 @@ const getById = async (req, res) => {
       throw HttpError(404, "User not found");
     }
 
-    const otherUser = room.users.find(
-      (user) => String(user._id) !== String(owner)
-    );
-    room.title = otherUser ? otherUser.name : "Private Room";
-    room.img = otherUser ? otherUser.avatarURL : "";
+    changeInfoMember(room, owner);
 
     res.json(room);
   }

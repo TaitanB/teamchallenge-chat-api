@@ -1,7 +1,7 @@
 const Room = require("../../models/room");
 const { perPage } = require("../../constants/constants");
 const { ctrlWrapper } = require("../../decorators");
-const { getQueryParameters } = require("../../helpers");
+const { getQueryParameters, changeInfoMember } = require("../../helpers");
 
 const getPrivate = async (req, res) => {
   const { _id: owner } = req.user;
@@ -17,7 +17,7 @@ const getPrivate = async (req, res) => {
 
   const totalPages = Math.ceil(total / perPage);
 
-  let rooms = await Room.find(queryParameters, "", {
+  const result = await Room.find(queryParameters, "", {
     skip,
     limit,
   })
@@ -25,14 +25,7 @@ const getPrivate = async (req, res) => {
     .populate("users", "_id name avatarURL")
     .sort({ updatedAt: -1 });
 
-  rooms = rooms.map((room) => {
-    const otherUser = room.users.find(
-      (user) => String(user._id) !== String(owner)
-    );
-    room.title = otherUser ? otherUser.name : "Private Room";
-    room.img = otherUser ? otherUser.avatarURL : "";
-    return room;
-  });
+  const rooms = result.map((room) => changeInfoMember(room, owner));
 
   res.status(200).json({ page, perPage, totalPages, rooms: rooms });
 };

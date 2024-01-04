@@ -1,7 +1,7 @@
 const Room = require("../../models/room");
 const { perPage } = require("../../constants/constants");
 const { ctrlWrapper } = require("../../decorators");
-const { getQueryParameters } = require("../../helpers");
+const { getQueryParameters, getRoomsMember } = require("../../helpers");
 
 const getPublicOwner = async (req, res) => {
   const { _id: owner } = req.user;
@@ -22,7 +22,9 @@ const getPublicOwner = async (req, res) => {
     limit,
   }).sort({ updatedAt: -1 });
 
-  res.status(200).json({ page, perPage, totalPages, rooms: result });
+  const rooms = getRoomsMember(result, owner);
+
+  res.status(200).json({ page, perPage, totalPages, rooms: rooms });
 };
 
 module.exports = {

@@ -3,6 +3,8 @@ const { perPage } = require("../../constants/constants");
 const { ctrlWrapper } = require("../../decorators");
 const { getQueryParameters } = require("../../helpers");
 
+// потріно видалити
+
 const getAllRooms = async (req, res) => {
   const { page = 1, limit = perPage } = req.query;
   const skip = (page - 1) * limit;

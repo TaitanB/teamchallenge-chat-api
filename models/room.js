@@ -10,9 +10,7 @@ const roomSchema = new Schema(
       match: textRegex,
       min: 2,
       max: 30,
-      required: function () {
-        return this.type === "public";
-      },
+      required: [true, "Title is required"],
     },
     description: {
       type: String,
