@@ -9,7 +9,7 @@ const register = async (req, res) => {
 
   const token = v4();
 
-  const avatarURL = gravatar.url(token, { d: "identicon" });
+  const avatarURL = gravatar.url(token, { d: "wavatar" });
 
   const newUser = await User.create({
     name,
