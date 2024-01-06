@@ -8,7 +8,7 @@ const addPublicRoom = async (req, res) => {
 
   const imgId = v1();
 
-  const imgURL = gravatar.url(imgId, { d: "identicon" });
+  const imgURL = gravatar.url(imgId, { d: "identicon", s: 480 });
 
   const room = await Room.create({
     ...req.body,
