@@ -22,6 +22,8 @@ const userSchema = new Schema(
   { versionKey: false, timestamps: true }
 );
 
+userSchema.index({ name: "text" });
+
 userSchema.post("save", handleMongooseError);
 
 const User = model("user", userSchema);
