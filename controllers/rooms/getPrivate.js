@@ -1,17 +1,38 @@
 const Room = require("../../models/room");
+const User = require("../../models/user");
 const { perPage } = require("../../constants/constants");
 const { ctrlWrapper } = require("../../decorators");
 const { getQueryParameters, changeInfoMember } = require("../../helpers");
 
 const getPrivate = async (req, res) => {
   const { _id: owner } = req.user;
-  const { page = 1, limit = perPage } = req.query;
+  const { page = 1, limit = perPage, query } = req.query;
   const skip = (page - 1) * limit;
 
   const queryParameters = getQueryParameters(req.query);
 
   queryParameters.type = "private";
-  queryParameters.$or = [{ owner: owner }, { users: owner }];
+
+  const userConditions = [];
+
+  if (query) {
+    const usersFinded = await User.find({ name: query }, "_id");
+
+    const userIds = usersFinded.map((user) => user._id);
+
+    userConditions.push({
+      users: { $in: userIds },
+      $or: [{ owner: owner }, { users: owner }],
+    });
+  } else {
+    userConditions.push({
+      $or: [{ owner: owner }, { users: owner }],
+    });
+  }
+
+  if (userConditions.length > 0) {
+    queryParameters.$and = userConditions;
+  }
 
   const total = await Room.countDocuments(queryParameters);
 
