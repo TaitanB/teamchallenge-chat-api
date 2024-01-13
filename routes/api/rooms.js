@@ -7,13 +7,11 @@ const {
   editById,
   deleteById,
   getAllPublic,
-  getAllOwner,
   getById,
   getRoomUsers,
   getPublicOwner,
   getPrivate,
   getPublicNotOwn,
-  getAllRooms,
 } = require("../../controllers/rooms");
 
 const { roomAddSchema, roomEditSchema } = require("../../schemas/rooms");
@@ -23,10 +21,6 @@ const { authenticate } = require("../../middlewares");
 const router = express.Router();
 
 router.get("/public", getAllPublic);
-
-router.get("/owner", authenticate, getAllOwner);
-
-router.get("/", authenticate, getAllRooms); // потрібно видалити
 
 router.get("/public/owner", authenticate, getPublicOwner);
 

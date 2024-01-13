@@ -16,14 +16,10 @@ const roomSchema = new Schema(
       type: String,
       match: textRegex,
       max: 300,
-      default: "",
     },
     img: {
       type: String,
-      required: function () {
-        return this.type === "private";
-      },
-      default: "",
+      required: true,
     },
     type: {
       type: String,

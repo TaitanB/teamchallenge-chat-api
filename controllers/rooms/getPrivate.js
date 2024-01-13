@@ -16,7 +16,10 @@ const getPrivate = async (req, res) => {
   const userConditions = [];
 
   if (query) {
-    const usersFinded = await User.find({ name: query }, "_id");
+    const usersFinded = await User.find(
+      { name: { $regex: query, $options: "i" } },
+      "_id"
+    );
 
     const userIds = usersFinded.map((user) => user._id);
 
