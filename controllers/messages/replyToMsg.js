@@ -13,7 +13,9 @@ const replyToMsg = async (req, res) => {
     { _id: msgId },
     { $push: { replys: reply } },
     { new: true }
-  ).populate("owner", "_id name avatarURL");
+  )
+    .populate("owner", "_id name avatarURL")
+    .populate("replys.owner", "_id name avatarURL");
 
   if (!msgToUpdate) {
     throw HttpError(404, "Message not found");
