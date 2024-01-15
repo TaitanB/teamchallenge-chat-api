@@ -188,7 +188,7 @@
                     "perPage": {
                       "type": "integer",
                       "description": "Quantity per page",
-                      "example": 10
+                      "example": 6
                     },
                     "totalPages": {
                       "type": "integer",
@@ -389,7 +389,7 @@
                     "rooms": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/PublicRoomResponse"
+                        "$ref": "#/components/schemas/MemberRoomResponse"
                       }
                     }
                   }
@@ -483,7 +483,7 @@
                     "rooms": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/PublicRoomResponse"
+                        "$ref": "#/components/schemas/MemberRoomResponse"
                       }
                     }
                   }
@@ -733,7 +733,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AddMessageResponse"
+                  "$ref": "#/components/schemas/MessageResponse"
                 }
               }
             }
@@ -820,7 +820,7 @@
                     "messages": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/AddMessageResponse"
+                        "$ref": "#/components/schemas/MessageResponse"
                       }
                     }
                   }
@@ -868,6 +868,101 @@
           },
           "404": {
             "description": "Message not found",
+            "content": {}
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Messages"],
+        "summary": "Edit message data",
+        "security": [{ "ApiKey": [] }],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Message's id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "description": "Request to update message data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MessageRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Message data updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {}
+          }
+        }
+      }
+    },
+
+    "/messages/reply/{id}": {
+      "patch": {
+        "tags": ["Messages"],
+        "summary": "Reply to message",
+        "security": [{ "ApiKey": [] }],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Message's id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "description": "Request to reply to message",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MessageRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Message data updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
+          "500": {
+            "description": "Internal server error",
             "content": {}
           }
         }
@@ -966,7 +1061,7 @@
           "_id": {
             "type": "string",
             "description": "Room's id",
-            "example": "1h23u45iumyhigjfsaitfyg"
+            "example": "65a59458c6edc1837659c117"
           },
           "title": {
             "type": "string",
@@ -1008,63 +1103,67 @@
       "PublicRoomResponse": {
         "type": "object",
         "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Room's id",
+            "example": "653c20669b6334f0b861e498"
+          },
+          "title": {
+            "type": "string",
+            "description": "The title of the room",
+            "example": "Room-1"
+          },
+          "topic": {
+            "type": "string",
+            "description": "Room topic for public rooms",
+            "example": "NUTRITION"
+          },
+          "type": {
+            "type": "string",
+            "description": "Room type",
+            "example": "public"
+          },
+          "description": {
+            "type": "string",
+            "description": "Room description",
+            "example": "Room description"
+          },
+          "img": {
+            "type": "string",
+            "description": "Image for room",
+            "example": "//example.com"
+          },
+          "owner": {
+            "type": "string",
+            "description": "Room's owner id",
+            "example": "659852ec30fb49241197777f"
+          },
+          "users": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Room's user id",
+              "example": "32143dshtuv2dfyuijhgf45474"
+            }
+          },
+          "createdAt": {
+            "type": "Date",
+            "description": "Room creation date",
+            "example": "2023-07-23T20:00:30.149+00:00"
+          },
+          "updatedAt": {
+            "type": "Date",
+            "description": "Room updated date",
+            "example": "2023-07-23T20:00:30.149+00:00"
+          }
+        }
+      },
+      "MemberRoomResponse": {
+        "type": "object",
+        "properties": {
           "room": {
             "type": "object",
-            "properties": {
-              "_id": {
-                "type": "string",
-                "description": "Room's id",
-                "example": "653c20669b6334f0b861e498"
-              },
-              "title": {
-                "type": "string",
-                "description": "The title of the room",
-                "example": "Room-1"
-              },
-              "topic": {
-                "type": "string",
-                "description": "Room topic for public rooms",
-                "example": "NUTRITION"
-              },
-              "type": {
-                "type": "string",
-                "description": "Room type",
-                "example": "public"
-              },
-              "description": {
-                "type": "string",
-                "description": "Room description",
-                "example": "Room description"
-              },
-              "img": {
-                "type": "string",
-                "description": "Image for room",
-                "example": "//example.com"
-              },
-              "owner": {
-                "type": "string",
-                "description": "Room's owner id",
-                "example": "659852ec30fb49241197777f"
-              },
-              "users": {
-                "type": "array",
-                "items": {
-                  "type": "string",
-                  "description": "Room's user id",
-                  "example": "32143dshtuv2dfyuijhgf45474"
-                }
-              },
-              "createdAt": {
-                "type": "Date",
-                "description": "Room creation date",
-                "example": "2023-07-23T20:00:30.149+00:00"
-              },
-              "updatedAt": {
-                "type": "Date",
-                "description": "Room updated date",
-                "example": "2023-07-23T20:00:30.149+00:00"
-              }
-            }
+            "$ref": "#/components/schemas/PublicRoomResponse"
           },
           "member": {
             "type": "boolean",
@@ -1073,6 +1172,7 @@
           }
         }
       },
+
       "PrivateRoomResponse": {
         "type": "object",
         "properties": {
@@ -1177,18 +1277,18 @@
           }
         }
       },
-      "AddMessageResponse": {
+      "MessageResponse": {
         "type": "object",
         "properties": {
           "_id": {
             "type": "string",
             "description": "Message's id",
-            "example": "1h23u45iumyhigjfsaitfyg"
+            "example": "65a59458c6edc1837659c117"
           },
           "roomId": {
             "type": "string",
             "description": "Identifier of the room in which this message was written",
-            "example": "1h23u45iumyhigjfsaitfyg"
+            "example": "65a59458c6edc1837659c117"
           },
           "content": {
             "type": "string",
@@ -1201,7 +1301,7 @@
               "_id": {
                 "type": "string",
                 "description": "Reply's owner id",
-                "example": "nfuwjhretyhbvcbuiwrhty"
+                "example": "65a2ec580b0e98a8d7c8ea7a"
               },
               "name": {
                 "type": "string",
@@ -1239,7 +1339,7 @@
           "_id": {
             "type": "string",
             "description": "Reply's owner id",
-            "example": "nfuwjhretyhbvcbuiwrhty"
+            "example": "65a2ec580b0e98a8d7c8ea7a"
           },
           "content": {
             "type": "string",
@@ -1252,7 +1352,7 @@
               "_id": {
                 "type": "string",
                 "description": "Reply's owner id",
-                "example": "nfuwjhretyhbvcbuiwrhty"
+                "example": "65a2ec580b0e98a8d7c8ea7a"
               },
               "name": {
                 "type": "string",
@@ -1268,12 +1368,7 @@
           },
           "createdAt": {
             "type": "Date",
-            "description": "Message creation date",
-            "example": "2023-07-23T20:00:30.149+00:00"
-          },
-          "updatedAt": {
-            "type": "Date",
-            "description": "Message updated date",
+            "description": "Reply creation date",
             "example": "2023-07-23T20:00:30.149+00:00"
           }
         }

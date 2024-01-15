@@ -3,8 +3,8 @@ const isValidId = require("../../middlewares/isValidId");
 
 const {
   addMsg,
-  //   editMsg,
-  //   replyToMsg,
+  editMsg,
+  replyToMsg,
   deleteById,
   getAllMsgByRoom,
 } = require("../../controllers/messages");
@@ -21,20 +21,14 @@ router.get("/:id", authenticate, isValidId, getAllMsgByRoom);
 
 router.delete("/:id", authenticate, isValidId, deleteById);
 
-// router.patch(
-//   "/:roomId/:msgId",
-//   authenticate,
-//   isValidId,
-//   validateBody(msgSchema),
-//   replyToMsg
-// );
+router.patch(
+  "/reply/:id",
+  authenticate,
+  isValidId,
+  validateBody(msgSchema),
+  replyToMsg
+);
 
-// router.patch(
-//   "/:id",
-//   authenticate,
-//   isValidId,
-//   validateBody(msgSchema),
-//   editMsg
-// );
+router.patch("/:id", authenticate, isValidId, validateBody(msgSchema), editMsg);
 
 module.exports = router;

@@ -17,12 +17,15 @@ const msgSchema = new Schema(
             type: String,
             match: textRegex,
             max: 300,
-            required: [true],
+            required: true,
           },
           owner: {
             type: Schema.Types.ObjectId,
             ref: "user",
             required: true,
+          },
+          createdAt: {
+            type: Date,
           },
         },
       ],
