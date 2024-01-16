@@ -29,6 +29,14 @@ const joinRoom = (io) => {
         .in(data.room)
         .emit("user-end-write", { id: data.userId, nick: data.nick });
     });
+
+    socket.on("private-room-created", (data) => {
+      roomNameSpace.emit("private-room-created", {
+        roomId: data._id,
+        guest: data.users[0],
+        owner: data.owner,
+      });
+    });
   });
 };
 
